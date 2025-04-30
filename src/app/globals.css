@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fffde7; /* Very light yellow */
+  --background: #b3dfa1;
   --foreground: #171717;
 }
 
@@ -14,15 +14,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #f5f3d7; /* Slightly darker yellow for dark mode */
+    --background: #b3dfa1;
     --foreground: #333333;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: #b3dfa1;
+  background-image: linear-gradient(315deg, #b3dfa1 0%, #f0e703 74%);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
 }
 
 /* Course Card Styles */

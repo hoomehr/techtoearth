@@ -5,9 +5,9 @@ import successStoriesData from "@/data/successStories.json";
 
 export default function Home() {
   return (
-    <div className="bg-yellow-50">
+    <div>
       {/* Hero section */}
-      <div className="relative">
+      <div className="relative mt-10">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden" style={{ boxShadow: '0 0 30px rgba(0, 128, 0, 0.3)' }}>
             <div className="absolute inset-0">
@@ -49,7 +49,7 @@ export default function Home() {
       </div>
 
       {/* Success Stories section */}
-      <div className="py-16 bg-yellow-50">
+      <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">Success Stories</h2>
@@ -78,7 +78,7 @@ export default function Home() {
       </div>
 
       {/* Features section */}
-      <div className="py-16 bg-yellow-50">
+      <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
             <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">Our Platform</h2>
@@ -153,7 +153,7 @@ export default function Home() {
       </div>
 
       {/* CTA section */}
-      <div className="bg-green-50">
+      <div className="bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             <span className="block">Ready to start your journey?</span>

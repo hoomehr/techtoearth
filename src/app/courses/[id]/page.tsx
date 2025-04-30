@@ -14,7 +14,7 @@ export default function CourseDetailsPage() {
 
   if (!course) {
     return (
-      <div className="bg-yellow-50 min-h-screen py-16">
+      <div className="min-h-screen py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl font-extrabold text-gray-900">Course Not Found</h1>
@@ -31,7 +31,7 @@ export default function CourseDetailsPage() {
   }
 
   return (
-    <div className="bg-yellow-50 min-h-screen">
+    <div className="min-h-screen">
       {/* Hero section */}
       <div className="relative">
         <div className="absolute inset-0">
