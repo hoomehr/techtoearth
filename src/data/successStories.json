@@ -1,0 +1,58 @@
+{
+  "successStories": [
+    {
+      "id": 1,
+      "name": "David Chen",
+      "formerRole": "Software Engineer",
+      "currentRole": "Organic Farm Owner",
+      "testimonial": "After 12 years in Silicon Valley, I was burnt out and disconnected from nature. TechToEarth helped me transition to running my own 15-acre organic farm. I now use my tech skills to optimize operations while enjoying a more fulfilling lifestyle.",
+      "transitionYear": "2020",
+      "imageSrc": "https://placehold.co/600x800/228B22/FFFFFF?text=David+Chen"
+    },
+    {
+      "id": 2,
+      "name": "Sarah Johnson",
+      "formerRole": "UX Designer",
+      "currentRole": "Vineyard & Winery Owner",
+      "testimonial": "I left my UX design career to pursue my passion for wine. The courses at TechToEarth gave me the knowledge and confidence to start my own vineyard. I now apply my design thinking to create exceptional wine experiences.",
+      "transitionYear": "2019",
+      "imageSrc": "https://placehold.co/600x800/800080/FFFFFF?text=Sarah+Johnson"
+    },
+    {
+      "id": 3,
+      "name": "Michael Torres",
+      "formerRole": "Data Scientist",
+      "currentRole": "Craft Brewery Founder",
+      "testimonial": "I leveraged my data science background to optimize brewing processes at my craft brewery. TechToEarth's courses bridged the gap between my technical skills and brewing science. My brewery now produces award-winning beers.",
+      "transitionYear": "2021",
+      "imageSrc": "https://placehold.co/600x800/CD853F/FFFFFF?text=Michael+Torres"
+    },
+    {
+      "id": 4,
+      "name": "Jennifer Lee",
+      "formerRole": "Product Manager",
+      "currentRole": "Sustainable Farm Consultant",
+      "testimonial": "As a product manager, I was skilled at optimizing processes and managing teams. Now I help farms implement sustainable practices and improve their operations. TechToEarth's courses gave me the agricultural knowledge I needed to complement my tech skills.",
+      "transitionYear": "2022",
+      "imageSrc": "https://placehold.co/600x800/4682B4/FFFFFF?text=Jennifer+Lee"
+    },
+    {
+      "id": 5,
+      "name": "Robert Kim",
+      "formerRole": "Systems Architect",
+      "currentRole": "Vertical Farming Entrepreneur",
+      "testimonial": "I combined my systems architecture background with agricultural knowledge from TechToEarth to launch an urban vertical farming business. We're now producing fresh greens for local restaurants using 95% less water than traditional farming.",
+      "transitionYear": "2021",
+      "imageSrc": "https://placehold.co/600x800/2E8B57/FFFFFF?text=Robert+Kim"
+    },
+    {
+      "id": 6,
+      "name": "Emily Rodriguez",
+      "formerRole": "Marketing Director",
+      "currentRole": "Artisanal Cheese Producer",
+      "testimonial": "My marketing background helps me tell the story of our small-batch cheeses, but it was TechToEarth's courses that taught me the science and craft of cheese making. Now I run a successful creamery that sources milk from local, sustainable farms.",
+      "transitionYear": "2020",
+      "imageSrc": "https://placehold.co/600x800/8B4513/FFFFFF?text=Emily+Rodriguez"
+    }
+  ]
+}

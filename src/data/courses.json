@@ -1,0 +1,401 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "Introduction to Sustainable Farming",
+      "description": "Learn the basics of sustainable farming practices and how to apply your tech skills to modern agriculture.",
+      "longDescription": "This comprehensive course introduces you to the principles and practices of sustainable farming. You'll learn how to leverage your technical background to implement modern agricultural solutions that are environmentally friendly, economically viable, and socially responsible. From soil health to water conservation, crop rotation to integrated pest management, this course covers all the fundamentals you need to start your journey in sustainable agriculture.",
+      "level": "Beginner",
+      "duration": "4 weeks",
+      "image": "https://placehold.co/600x400/228B22/FFFFFF?text=Sustainable+Farming",
+      "instructor": "Dr. Emily Johnson",
+      "price": 199,
+      "topics": ["Soil Health", "Water Conservation", "Organic Farming", "Tech Integration", "Crop Planning"],
+      "modules": [
+        {
+          "title": "Introduction to Sustainable Agriculture",
+          "lessons": [
+            "Understanding Sustainable Farming Principles",
+            "The Role of Technology in Modern Agriculture",
+            "Transitioning from Tech to Agriculture"
+          ]
+        },
+        {
+          "title": "Soil Health and Management",
+          "lessons": [
+            "Soil Composition and Testing",
+            "Building Soil Health",
+            "Composting and Organic Matter",
+            "Cover Crops and Crop Rotation"
+          ]
+        },
+        {
+          "title": "Water Conservation Techniques",
+          "lessons": [
+            "Water Management Systems",
+            "Irrigation Technologies",
+            "Rainwater Harvesting",
+            "Drought Resilience Strategies"
+          ]
+        },
+        {
+          "title": "Sustainable Crop Production",
+          "lessons": [
+            "Organic Farming Methods",
+            "Integrated Pest Management",
+            "Season Extension Techniques",
+            "Harvest and Post-Harvest Handling"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Tech Solutions for Agriculture",
+      "description": "Discover how to leverage your technical expertise to solve common agricultural challenges.",
+      "longDescription": "This intermediate course is designed for tech professionals who want to apply their skills to solve real-world agricultural problems. You'll explore how technologies like IoT, AI, machine learning, and data analytics are transforming farming practices. Through case studies and hands-on projects, you'll learn to develop and implement technical solutions that address challenges in crop monitoring, resource management, yield prediction, and more.",
+      "level": "Intermediate",
+      "duration": "6 weeks",
+      "image": "https://placehold.co/600x400/4682B4/FFFFFF?text=Tech+Agriculture",
+      "instructor": "Prof. Michael Chen",
+      "price": 299,
+      "topics": ["IoT in Agriculture", "AI and Machine Learning", "Precision Farming", "Data Analytics", "Smart Irrigation"],
+      "modules": [
+        {
+          "title": "Introduction to AgTech",
+          "lessons": [
+            "The AgTech Revolution",
+            "Current Challenges in Agriculture",
+            "Opportunities for Tech Professionals"
+          ]
+        },
+        {
+          "title": "IoT Applications in Agriculture",
+          "lessons": [
+            "Sensor Networks for Farm Monitoring",
+            "Connected Farm Equipment",
+            "Building IoT Systems for Agriculture",
+            "Case Studies in IoT Implementation"
+          ]
+        },
+        {
+          "title": "Data Analytics for Farm Management",
+          "lessons": [
+            "Collecting and Managing Agricultural Data",
+            "Analyzing Farm Performance Metrics",
+            "Predictive Analytics for Crop Yields",
+            "Data-Driven Decision Making"
+          ]
+        },
+        {
+          "title": "AI and Machine Learning in Agriculture",
+          "lessons": [
+            "Computer Vision for Crop Monitoring",
+            "Machine Learning for Pest and Disease Detection",
+            "Predictive Modeling for Resource Optimization",
+            "Implementing AI Solutions on the Farm"
+          ]
+        },
+        {
+          "title": "Precision Agriculture Systems",
+          "lessons": [
+            "GPS and Mapping Technologies",
+            "Variable Rate Application Systems",
+            "Drone and Satellite Imagery Analysis",
+            "Building Integrated Precision Farming Solutions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Starting Your Own Farm Business",
+      "description": "A comprehensive guide to planning, launching, and growing your own agricultural business.",
+      "longDescription": "This advanced course provides a complete roadmap for tech professionals looking to start their own farm business. From business planning and financial management to marketing and distribution, you'll learn all aspects of running a successful agricultural enterprise. The course emphasizes how to leverage your technical background to create innovative, efficient, and profitable farming operations. You'll develop a comprehensive business plan and go-to-market strategy for your farm venture.",
+      "level": "Advanced",
+      "duration": "8 weeks",
+      "image": "https://placehold.co/600x400/8B4513/FFFFFF?text=Farm+Business",
+      "instructor": "Sarah Williams, MBA",
+      "price": 399,
+      "topics": ["Business Planning", "Financial Management", "Marketing", "Distribution", "Legal Considerations"],
+      "modules": [
+        {
+          "title": "Farm Business Fundamentals",
+          "lessons": [
+            "Types of Agricultural Businesses",
+            "Finding Your Niche in Agriculture",
+            "From Tech Professional to Farm Entrepreneur",
+            "Success Stories and Case Studies"
+          ]
+        },
+        {
+          "title": "Business Planning for Farms",
+          "lessons": [
+            "Developing Your Farm Business Plan",
+            "Market Research and Analysis",
+            "Setting Goals and Objectives",
+            "Creating Financial Projections"
+          ]
+        },
+        {
+          "title": "Land Acquisition and Farm Setup",
+          "lessons": [
+            "Finding and Evaluating Land",
+            "Understanding Zoning and Regulations",
+            "Infrastructure and Equipment Planning",
+            "Sustainable Farm Design"
+          ]
+        },
+        {
+          "title": "Farm Financial Management",
+          "lessons": [
+            "Agricultural Accounting Basics",
+            "Funding and Financing Options",
+            "Managing Cash Flow",
+            "Tax Considerations for Farm Businesses"
+          ]
+        },
+        {
+          "title": "Marketing and Distribution",
+          "lessons": [
+            "Building Your Farm Brand",
+            "Direct Marketing Strategies",
+            "Wholesale and Retail Relationships",
+            "E-commerce for Farm Products"
+          ]
+        },
+        {
+          "title": "Legal and Regulatory Considerations",
+          "lessons": [
+            "Business Structures for Farms",
+            "Insurance Requirements",
+            "Food Safety Regulations",
+            "Organic and Other Certifications"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Vineyard Management and Wine Production",
+      "description": "Learn the art and science of vineyard management and wine production from industry experts.",
+      "longDescription": "This specialized course covers all aspects of vineyard management and wine production, from grape cultivation to fermentation, aging, and bottling. You'll learn how to apply technical skills to optimize vineyard operations, monitor grape quality, and implement precision viticulture techniques. The course also covers wine chemistry, sensory analysis, and quality control methods. By the end, you'll have the knowledge to start or manage a vineyard operation with a focus on producing high-quality wines.",
+      "level": "Intermediate",
+      "duration": "10 weeks",
+      "image": "https://placehold.co/600x400/800080/FFFFFF?text=Vineyard+Management",
+      "instructor": "Antonio Rossi, Master Vintner",
+      "price": 499,
+      "topics": ["Viticulture", "Enology", "Wine Chemistry", "Vineyard Technology", "Wine Business"],
+      "modules": [
+        {
+          "title": "Introduction to Viticulture",
+          "lessons": [
+            "History and Evolution of Winemaking",
+            "Grape Varieties and Characteristics",
+            "Vineyard Site Selection",
+            "Climate and Terroir Considerations"
+          ]
+        },
+        {
+          "title": "Vineyard Establishment and Management",
+          "lessons": [
+            "Vineyard Layout and Design",
+            "Planting and Training Systems",
+            "Seasonal Vineyard Operations",
+            "Sustainable Vineyard Practices"
+          ]
+        },
+        {
+          "title": "Precision Viticulture",
+          "lessons": [
+            "Technology Applications in Vineyards",
+            "Monitoring Systems for Vine Health",
+            "Data Collection and Analysis",
+            "Optimizing Vineyard Operations"
+          ]
+        },
+        {
+          "title": "Grape Harvesting and Processing",
+          "lessons": [
+            "Determining Harvest Timing",
+            "Harvesting Methods and Equipment",
+            "Grape Sorting and Processing",
+            "Pre-Fermentation Treatments"
+          ]
+        },
+        {
+          "title": "Wine Production Fundamentals",
+          "lessons": [
+            "Fermentation Science and Management",
+            "Winemaking Equipment and Facilities",
+            "Red, White, and Rosé Production Methods",
+            "Specialized Wine Styles"
+          ]
+        },
+        {
+          "title": "Wine Aging and Finishing",
+          "lessons": [
+            "Barrel Selection and Management",
+            "Aging Processes and Timelines",
+            "Fining and Filtration",
+            "Bottling Operations"
+          ]
+        },
+        {
+          "title": "Wine Business Operations",
+          "lessons": [
+            "Winery Business Planning",
+            "Marketing and Distribution",
+            "Tasting Room Management",
+            "Wine Tourism and Experiences"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Craft Brewing Fundamentals",
+      "description": "Master the fundamentals of craft brewing and learn how to start your own microbrewery.",
+      "longDescription": "This course provides a comprehensive introduction to craft brewing, covering everything from ingredients and brewing processes to equipment setup and business operations. You'll learn the science behind brewing different styles of beer and how to apply technical skills to optimize brewing operations. The course also covers quality control, packaging, and distribution. By the end, you'll have the knowledge and skills to start your own microbrewery or work in the craft brewing industry.",
+      "level": "Beginner",
+      "duration": "6 weeks",
+      "image": "https://placehold.co/600x400/CD853F/FFFFFF?text=Craft+Brewing",
+      "instructor": "James Miller, Master Brewer",
+      "price": 299,
+      "topics": ["Brewing Science", "Beer Styles", "Equipment Setup", "Quality Control", "Brewery Business"],
+      "modules": [
+        {
+          "title": "Introduction to Craft Brewing",
+          "lessons": [
+            "History and Evolution of Craft Beer",
+            "Beer Ingredients and Their Roles",
+            "Overview of the Brewing Process",
+            "Beer Styles and Classifications"
+          ]
+        },
+        {
+          "title": "Brewing Science Fundamentals",
+          "lessons": [
+            "Water Chemistry for Brewing",
+            "Malt and Grain Processing",
+            "Hop Varieties and Usage",
+            "Yeast Biology and Fermentation"
+          ]
+        },
+        {
+          "title": "Brewing Equipment and Processes",
+          "lessons": [
+            "Brewery Setup and Layout",
+            "Brewing Equipment Selection",
+            "The Brewing Process Step-by-Step",
+            "Cleaning and Sanitation Protocols"
+          ]
+        },
+        {
+          "title": "Recipe Development and Brewing Techniques",
+          "lessons": [
+            "Formulating Beer Recipes",
+            "Brewing Calculations and Measurements",
+            "Specialty Brewing Techniques",
+            "Troubleshooting Common Issues"
+          ]
+        },
+        {
+          "title": "Quality Control and Packaging",
+          "lessons": [
+            "Sensory Analysis and Tasting",
+            "Laboratory Testing Methods",
+            "Packaging Options and Equipment",
+            "Storage and Distribution Considerations"
+          ]
+        },
+        {
+          "title": "Brewery Business Operations",
+          "lessons": [
+            "Brewery Business Planning",
+            "Licensing and Regulatory Requirements",
+            "Taproom Management",
+            "Marketing and Distribution Strategies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Farm-to-Table Restaurant Management",
+      "description": "Learn how to create and manage a successful farm-to-table restaurant concept.",
+      "longDescription": "This advanced course covers all aspects of creating and managing a farm-to-table restaurant, from concept development and menu planning to sourcing, operations, and marketing. You'll learn how to build relationships with local farmers, create seasonal menus, and implement sustainable practices throughout your restaurant. The course emphasizes how to leverage technology for inventory management, supplier relationships, and customer engagement. By the end, you'll have a complete business plan for a farm-to-table restaurant.",
+      "level": "Advanced",
+      "duration": "12 weeks",
+      "image": "https://placehold.co/600x400/2E8B57/FFFFFF?text=Farm+to+Table",
+      "instructor": "Chef Maria Rodriguez",
+      "price": 599,
+      "topics": ["Restaurant Concept", "Menu Planning", "Local Sourcing", "Sustainable Operations", "Culinary Techniques"],
+      "modules": [
+        {
+          "title": "Farm-to-Table Philosophy and Concept",
+          "lessons": [
+            "History and Evolution of Farm-to-Table",
+            "Defining Your Restaurant Concept",
+            "Case Studies of Successful Concepts",
+            "Sustainability in Restaurant Operations"
+          ]
+        },
+        {
+          "title": "Building Farmer Relationships",
+          "lessons": [
+            "Finding and Evaluating Local Producers",
+            "Developing Sustainable Partnerships",
+            "Managing Seasonal Availability",
+            "Creating Fair Pricing Structures"
+          ]
+        },
+        {
+          "title": "Menu Development and Planning",
+          "lessons": [
+            "Seasonal Menu Planning",
+            "Pricing and Food Cost Management",
+            "Menu Engineering for Profitability",
+            "Accommodating Dietary Restrictions"
+          ]
+        },
+        {
+          "title": "Kitchen Operations and Techniques",
+          "lessons": [
+            "Kitchen Design for Farm-to-Table",
+            "Preservation and Storage Techniques",
+            "Whole Animal and Whole Plant Utilization",
+            "Reducing Food Waste"
+          ]
+        },
+        {
+          "title": "Restaurant Management Systems",
+          "lessons": [
+            "Inventory Management for Seasonal Items",
+            "Staff Training and Management",
+            "Technology Solutions for Operations",
+            "Quality Control Systems"
+          ]
+        },
+        {
+          "title": "Marketing and Customer Engagement",
+          "lessons": [
+            "Telling Your Farm-to-Table Story",
+            "Digital Marketing Strategies",
+            "Building Community Connections",
+            "Events and Educational Programming"
+          ]
+        },
+        {
+          "title": "Business Planning and Financials",
+          "lessons": [
+            "Creating a Farm-to-Table Business Plan",
+            "Financial Projections and Management",
+            "Funding and Investment Strategies",
+            "Measuring Success and Sustainability"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,34 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SuccessStoryCard from "@/components/cards/SuccessStoryCard";
-
-// Success stories data
-const successStories = [
-  {
-    name: "David Chen",
-    formerRole: "Software Engineer",
-    currentRole: "Organic Farm Owner",
-    testimonial: "After 12 years in Silicon Valley, I was burnt out and disconnected from nature. TechToEarth helped me transition to running my own 15-acre organic farm. I now use my tech skills to optimize operations while enjoying a more fulfilling lifestyle.",
-    transitionYear: "2020",
-    imageSrc: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-  },
-  {
-    name: "Sarah Johnson",
-    formerRole: "UX Designer",
-    currentRole: "Vineyard & Winery Owner",
-    testimonial: "I left my UX design career to pursue my passion for wine. The courses at TechToEarth gave me the knowledge and confidence to start my own vineyard. I now apply my design thinking to create exceptional wine experiences.",
-    transitionYear: "2019",
-    imageSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-  },
-  {
-    name: "Michael Torres",
-    formerRole: "Data Scientist",
-    currentRole: "Craft Brewery Founder",
-    testimonial: "I leveraged my data science background to optimize brewing processes at my craft brewery. TechToEarth's courses bridged the gap between my technical skills and brewing science. My brewery now produces award-winning beers.",
-    transitionYear: "2021",
-    imageSrc: "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-  }
-];
+import successStoriesData from "@/data/successStories.json";
 
 export default function Home() {
   return (
@@ -40,7 +13,7 @@ export default function Home() {
             <div className="absolute inset-0">
               <Image
                 className="h-full w-full object-cover"
-                src="https://images.unsplash.com/photo-1498429089284-41f8cf3ffd39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                src="https://placehold.co/1920x1080/4B7F52/FFFFFF?text=TechToEarth+Hero+Image"
                 alt="People working on farms"
                 fill
                 priority
@@ -89,9 +62,9 @@ export default function Home() {
           </div>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {successStories.map((story, index) => (
+            {successStoriesData.successStories.slice(0, 3).map((story) => (
               <SuccessStoryCard
-                key={index}
+                key={story.id}
                 name={story.name}
                 formerRole={story.formerRole}
                 currentRole={story.currentRole}

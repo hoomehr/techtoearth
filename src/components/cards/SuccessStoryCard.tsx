@@ -37,9 +37,9 @@ export default function SuccessStoryCard({
           <p className="text-sm">Former {formerRole}</p>
         </div>
       </div>
-      <div className="p-6 relative">
-        <div className="absolute -top-4 -right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full transform rotate-12 shadow-lg">
-          Success Story
+      <div className="p-6 relative group">
+        <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+          Read Story
         </div>
         <p className="text-green-600 font-semibold mb-2">Now: {currentRole}</p>
         <p className="text-gray-600 mb-4">
