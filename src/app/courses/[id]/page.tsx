@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import RelatedCoursesSection from '@/components/cards/RelatedCoursesSection';
 
 // This would typically come from a database
 const courses = [
@@ -252,7 +253,8 @@ const courses = [
 ];
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const courseId = parseInt(params.id);
+  const id = params.id;
+  const courseId = parseInt(id);
   const course = courses.find(c => c.id === courseId);
 
   if (!course) {
@@ -269,7 +271,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function CourseDetailsPage({ params }: { params: { id: string } }) {
-  const courseId = parseInt(params.id);
+  const id = params.id;
+  const courseId = parseInt(id);
   const course = courses.find(c => c.id === courseId);
 
   if (!course) {
@@ -473,50 +476,11 @@ export default async function CourseDetailsPage({ params }: { params: { id: stri
       </div>
 
       {/* Related courses */}
-      <div className="bg-yellow-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-extrabold text-gray-900">Related Courses</h2>
-          <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {courses
-              .filter(c => c.id !== course.id && c.level === course.level)
-              .slice(0, 3)
-              .map((relatedCourse) => (
-                <div key={relatedCourse.id} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
-                  <div className="flex-shrink-0 h-48 w-full relative">
-                    <Image
-                      src={relatedCourse.image}
-                      alt={relatedCourse.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 bg-white p-6 flex flex-col justify-between">
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center">
-                        <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                          {relatedCourse.level}
-                        </span>
-                        <span className="text-sm text-gray-500">{relatedCourse.duration}</span>
-                      </div>
-                      <Link href={`/courses/${relatedCourse.id}`} className="block mt-2">
-                        <p className="text-xl font-semibold text-gray-900">{relatedCourse.title}</p>
-                        <p className="mt-3 text-base text-gray-500">{relatedCourse.description}</p>
-                      </Link>
-                    </div>
-                    <div className="mt-6">
-                      <Link
-                        href={`/courses/${relatedCourse.id}`}
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                      >
-                        View Course
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      </div>
+      <RelatedCoursesSection
+        currentCourseId={course.id}
+        courses={courses}
+        level={course.level}
+      />
     </div>
   );
 }

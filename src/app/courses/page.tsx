@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import CourseCard from '@/components/cards/CourseCard';
 
 // This would typically come from a database
 const courses = [
@@ -71,38 +72,15 @@ export default function CoursesPage() {
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
-            <div key={course.id} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
-              <div className="flex-shrink-0 h-48 w-full relative">
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex-1 bg-white p-6 flex flex-col justify-between">
-                <div className="flex-1">
-                  <div className="flex justify-between items-center">
-                    <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                      {course.level}
-                    </span>
-                    <span className="text-sm text-gray-500">{course.duration}</span>
-                  </div>
-                  <Link href={`/courses/${course.id}`} className="block mt-2 hover:text-green-600">
-                    <p className="text-xl font-semibold text-gray-900 hover:text-green-600">{course.title}</p>
-                    <p className="mt-3 text-base text-gray-500">{course.description}</p>
-                  </Link>
-                </div>
-                <div className="mt-6">
-                  <Link
-                    href={`/courses/${course.id}`}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 transform hover:scale-105"
-                  >
-                    View Course Details
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <CourseCard
+              key={course.id}
+              id={course.id}
+              title={course.title}
+              description={course.description}
+              level={course.level}
+              duration={course.duration}
+              image={course.image}
+            />
           ))}
         </div>
       </div>
