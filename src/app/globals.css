@@ -36,3 +36,119 @@ body {
 .course-card:hover {
   box-shadow: 0 0 20px rgba(0, 128, 0, 0.3);
 }
+
+/* Section Header Styles */
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: rgba(134, 239, 172, 0.2);
+  color: rgb(22, 101, 52);
+}
+
+.section-tag-container {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: rgb(17, 24, 39);
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: rgb(22, 163, 74);
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.section-description {
+  margin-top: 1.5rem;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: rgb(75, 85, 99);
+}
+
+.section-button-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.section-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-width: 1px;
+  border-color: transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  color: white;
+  background-color: rgb(22, 163, 74);
+  transition: background-color 0.2s;
+}
+
+.section-button:hover {
+  background-color: rgb(21, 128, 61);
+}
+
+/* Responsive styles */
+@media (min-width: 640px) {
+  .section-title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .section-subtitle {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .section-description {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
+  .section-subtitle {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .section-description {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    max-width: 48rem;
+  }
+}

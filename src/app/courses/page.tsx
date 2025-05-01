@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CourseCard from '@/components/cards/CourseCard';
 import CourseFilterBar from '@/components/filters/CourseFilterBar';
+import SectionHeader from '@/components/SectionHeader';
 import coursesData from '@/data/courses.json';
 
 // Metadata is moved to a separate file when using client components
@@ -58,14 +59,18 @@ export default function CoursesPage() {
   return (
     <div>
       <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">Our Courses</h1>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-            Designed specifically for tech professionals looking to transition to agriculture, food, and beverage industries.
-          </p>
-        </div>
+        <SectionHeader
+          tag="Education"
+          title="Our Courses"
+          subtitle="Learn From Industry Experts"
+          description="Designed specifically for tech professionals looking to transition to agriculture, food, and beverage industries."
+          actionButton={{
+            text: "Browse All",
+            href: "#courses"
+          }}
+        />
 
-        <div className="mt-12">
+        <div className="mt-12" id="courses">
           <CourseFilterBar
             levels={allLevels}
             topics={allTopics}

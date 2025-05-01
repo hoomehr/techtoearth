@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import ResourceCard from '@/components/cards/ResourceCard';
+import SectionHeader from '@/components/SectionHeader';
 import resourcesData from '@/data/resources.json';
 
 export const metadata = {
@@ -26,33 +27,21 @@ export default function ResourcesPage() {
       {/* Hero section */}
       <div className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="text-center">
-            <div className="inline-block mb-4">
-              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                Knowledge Hub
-              </span>
-            </div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-              <span className="block mb-2">Learning Resources</span>
-              <span className="block text-green-600 text-3xl sm:text-4xl md:text-5xl">For Your Agricultural Journey</span>
-            </h1>
-            <p className="mt-6 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-8 md:text-xl md:max-w-3xl">
-              Explore our curated collection of books, guides, articles, and tools to help you transition from tech to agriculture.
-            </p>
-
-            <div className="mt-8 flex justify-center">
-              <div className="inline-flex rounded-md shadow">
-                <a href="#books" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
-                  Browse Resources
-                </a>
-              </div>
-            </div>
-          </div>
+          <SectionHeader
+            tag="Knowledge Hub"
+            title="Learning Resources"
+            subtitle="For Your Agricultural Journey"
+            description="Explore our curated collection of books, guides, articles, and tools to help you transition from tech to agriculture."
+            actionButton={{
+              text: "Browse Resources",
+              href: "#books"
+            }}
+          />
         </div>
       </div>
 
       {/* Resources Grid */}
-      <div className="py-12">
+      <div className="py-12" id="books">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {categories.map((category) => (
             <div key={category} className="mb-16" id={category.toLowerCase().replace(/\s+/g, '-')}>
@@ -92,14 +81,20 @@ export default function ResourcesPage() {
             <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-60 h-60 bg-green-400 rounded-full opacity-20"></div>
 
             <div className="relative pt-10 pb-12 px-6 sm:pt-16 sm:px-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
-              <div className="lg:self-center max-w-3xl">
+              <div className="text-center max-w-3xl mx-auto">
+                <div className="inline-block mb-4">
+                  <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white bg-opacity-20 text-white">
+                    Contribute
+                  </span>
+                </div>
                 <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-                  <span className="block">Have a resource to share?</span>
+                  <span className="block mb-2">Have a Resource to Share?</span>
+                  <span className="block text-green-200 text-2xl sm:text-3xl">Help Our Community Grow</span>
                 </h2>
-                <p className="mt-4 text-lg leading-6 text-green-100">
+                <p className="mt-6 max-w-2xl mx-auto text-base text-green-100 sm:text-lg md:mt-8 md:text-xl">
                   If you have a book, article, or tool that has helped you in your transition to agriculture, we'd love to add it to our collection.
                 </p>
-                <div className="mt-8 flex flex-wrap gap-4">
+                <div className="mt-8 flex justify-center flex-wrap gap-4">
                   <Link
                     href="/contact"
                     className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-green-700 bg-white hover:bg-green-50 transition-colors duration-200"
