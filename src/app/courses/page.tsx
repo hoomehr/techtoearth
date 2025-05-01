@@ -6,6 +6,8 @@ import Image from 'next/image';
 import CourseCard from '@/components/cards/CourseCard';
 import CourseFilterBar from '@/components/filters/CourseFilterBar';
 import SectionHeaderWithDivider from '@/components/SectionHeaderWithDivider';
+// Import the data access functions
+import { getCourses } from '@/app/api/data';
 import coursesData from '@/data/courses.json';
 
 // Metadata is moved to a separate file when using client components

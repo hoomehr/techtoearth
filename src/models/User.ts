@@ -1,22 +1,36 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IUser extends Document {
+  id: number;
   name: string;
   email: string;
-  password: string;
-  techBackground?: string;
-  interests?: string[];
+  avatar: string;
+  bio: string;
+  location: string;
+  joinedDate: string;
+  enrolledCourses: number[];
+  savedEvents: number[];
+  joinedGroups: number[];
+  savedResources: number[];
+  password?: string; // Optional for authentication
   createdAt: Date;
   updatedAt: Date;
 }
 
 const UserSchema: Schema = new Schema(
   {
+    id: { type: Number, required: true, unique: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    techBackground: { type: String },
-    interests: [{ type: String }],
+    avatar: { type: String, required: true },
+    bio: { type: String, required: true },
+    location: { type: String, required: true },
+    joinedDate: { type: String, required: true },
+    enrolledCourses: [{ type: Number }],
+    savedEvents: [{ type: Number }],
+    joinedGroups: [{ type: Number }],
+    savedResources: [{ type: Number }],
+    password: { type: String }, // Optional for authentication
   },
   { timestamps: true }
 );
