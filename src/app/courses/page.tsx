@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CourseCard from '@/components/cards/CourseCard';
 import CourseFilterBar from '@/components/filters/CourseFilterBar';
-import SectionHeader from '@/components/SectionHeader';
+import SectionHeaderWithDivider from '@/components/SectionHeaderWithDivider';
 import coursesData from '@/data/courses.json';
 
 // Metadata is moved to a separate file when using client components
@@ -59,16 +59,33 @@ export default function CoursesPage() {
   return (
     <div>
       <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <SectionHeader
-          tag="Education"
-          title="Our Courses"
-          subtitle="Learn From Industry Experts"
-          description="Designed specifically for tech professionals looking to transition to agriculture, food, and beverage industries."
-          actionButton={{
-            text: "Browse All",
-            href: "#courses"
-          }}
-        />
+        <div className="mb-10 text-left">
+          <div className="inline-block mb-4">
+            <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              Education
+            </span>
+          </div>
+          <div className="mb-2">
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+              Our Courses
+            </h1>
+          </div>
+          <div className="flex items-center mb-4">
+            <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">Learn From Industry Experts</p>
+            <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+          </div>
+          <p className="max-w-3xl text-base text-gray-600 sm:text-lg md:text-xl mb-6">
+            Designed specifically for tech professionals looking to transition to agriculture, food, and beverage industries.
+          </p>
+          <div>
+            <a
+              href="#courses"
+              className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
+            >
+              Browse All
+            </a>
+          </div>
+        </div>
 
         <div className="mt-12" id="courses">
           <CourseFilterBar

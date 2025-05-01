@@ -60,12 +60,23 @@ export default function Home() {
       {/* Success Stories section */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Success Stories"
-            title="From Tech to Earth"
-            subtitle="Real Transitions"
-            description="Meet some of our members who successfully made the leap from tech careers to agriculture."
-          />
+          <div className="mb-10 text-left">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Success Stories
+              </span>
+            </div>
+            <div className="mb-2">
+              <h2 className="text-3xl font-bold text-gray-900">From Tech to Earth</h2>
+            </div>
+            <div className="flex items-center mb-4">
+              <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">Real Transitions</p>
+              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+            </div>
+            <p className="max-w-3xl text-base text-gray-600 sm:text-lg md:text-xl">
+              Meet some of our members who successfully made the leap from tech careers to agriculture.
+            </p>
+          </div>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {successStoriesData.successStories.slice(0, 3).map((story) => (
@@ -86,12 +97,23 @@ export default function Home() {
       {/* Features section */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Our Platform"
-            title="Everything You Need"
-            subtitle="To Transition to Agriculture"
-            description="We provide the knowledge, community, and resources to help you make a successful career change."
-          />
+          <div className="mb-10 text-left">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Our Platform
+              </span>
+            </div>
+            <div className="mb-2">
+              <h2 className="text-3xl font-bold text-gray-900">Everything You Need</h2>
+            </div>
+            <div className="flex items-center mb-4">
+              <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">To Transition to Agriculture</p>
+              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+            </div>
+            <p className="max-w-3xl text-base text-gray-600 sm:text-lg md:text-xl">
+              We provide the knowledge, community, and resources to help you make a successful career change.
+            </p>
+          </div>
 
           <div className="mt-10">
             <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">

@@ -31,15 +31,25 @@ export default function CommunityPage() {
       </div>
 
       {/* Upcoming Events section */}
-      <div className="py-12 md:py-16" id="events">
+      <div className="py-8 md:py-12" id="events">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Calendar"
-            title="Upcoming Events"
-            subtitle="Join Us and Learn"
-            description="Join us for workshops, webinars, and networking opportunities designed for tech professionals interested in agriculture."
-            className="mb-12"
-          />
+          <div className="mb-10 text-left">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Calendar
+              </span>
+            </div>
+            <div className="mb-2">
+              <h2 className="text-3xl font-bold text-gray-900">Upcoming Events</h2>
+            </div>
+            <div className="flex items-center mb-4">
+              <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">Join Us and Learn</p>
+              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+            </div>
+            <p className="max-w-3xl text-base text-gray-600 sm:text-lg md:text-xl">
+              Join us for workshops, webinars, and networking opportunities designed for tech professionals interested in agriculture.
+            </p>
+          </div>
 
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {eventsData.events.map((event) => (
@@ -69,15 +79,25 @@ export default function CommunityPage() {
       </div>
 
       {/* Featured Groups section */}
-      <div className="py-12 md:py-16 bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm">
+      <div className="py-8 md:py-12 bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Connect"
-            title="Featured Groups"
-            subtitle="Find Your Community"
-            description="Join specialized groups based on your interests and connect with members who share your passion."
-            className="mb-12"
-          />
+          <div className="mb-10 text-left">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Connect
+              </span>
+            </div>
+            <div className="mb-2">
+              <h2 className="text-3xl font-bold text-gray-900">Featured Groups</h2>
+            </div>
+            <div className="flex items-center mb-4">
+              <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">Find Your Community</p>
+              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+            </div>
+            <p className="max-w-3xl text-base text-gray-600 sm:text-lg md:text-xl">
+              Join specialized groups based on your interests and connect with members who share your passion.
+            </p>
+          </div>
 
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {groupsData.groups.map((group) => (

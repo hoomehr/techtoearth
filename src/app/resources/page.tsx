@@ -27,16 +27,35 @@ export default function ResourcesPage() {
       {/* Hero section */}
       <div className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <SectionHeader
-            tag="Knowledge Hub"
-            title="Learning Resources"
-            subtitle="For Your Agricultural Journey"
-            description="Explore our curated collection of books, guides, articles, and tools to help you transition from tech to agriculture."
-            actionButton={{
-              text: "Browse Resources",
-              href: "#books"
-            }}
-          />
+          <div className="text-left mb-10">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Knowledge Hub
+              </span>
+            </div>
+            <div className="mb-2">
+              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+                Learning Resources
+              </h1>
+            </div>
+            <div className="flex items-center mb-4">
+              <p className="text-green-600 text-2xl sm:text-3xl font-semibold mr-4">
+                For Your Agricultural Journey
+              </p>
+              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+            </div>
+            <p className="max-w-3xl text-base text-gray-600 sm:text-lg md:text-xl mb-6">
+              Explore our curated collection of books, guides, articles, and tools to help you transition from tech to agriculture.
+            </p>
+            <div>
+              <a
+                href="#books"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
+              >
+                Browse Resources
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -45,11 +64,20 @@ export default function ResourcesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {categories.map((category) => (
             <div key={category} className="mb-16" id={category.toLowerCase().replace(/\s+/g, '-')}>
-              <div className="flex items-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900">
-                  {category}
-                </h2>
-                <div className="ml-4 flex-grow h-0.5 bg-gradient-to-r from-green-500 to-yellow-400 rounded-full"></div>
+              <div className="text-left mb-6">
+                <div className="mb-2">
+                  <h2 className="text-3xl font-bold text-gray-900">
+                    {category}
+                  </h2>
+                </div>
+                <div className="flex items-center mb-4">
+                  <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">
+                    {category === "Books" ? "Essential Reading" :
+                     category === "Guides & PDFs" ? "Practical Knowledge" :
+                     "Learn & Listen"}
+                  </p>
+                  <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
