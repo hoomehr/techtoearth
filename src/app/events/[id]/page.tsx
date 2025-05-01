@@ -1,6 +1,3 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -8,42 +5,17 @@ import { FiCalendar, FiClock, FiMapPin, FiMonitor, FiUsers, FiArrowLeft, FiShare
 import eventsData from '@/data/events.json';
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
-  const [event, setEvent] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Find the event with the matching ID
-    const eventId = parseInt(params.id);
-    const foundEvent = eventsData.events.find(e => e.id === eventId);
-    
-    if (foundEvent) {
-      setEvent(foundEvent);
-    }
-    setLoading(false);
-  }, [params.id]);
+  // Find the event with the matching ID
+  const eventId = parseInt(params.id);
+  const event = eventsData.events.find(e => e.id === eventId);
 
   // Show 404 if event not found
-  if (!loading && !event) {
+  if (!event) {
     notFound();
   }
 
-  if (loading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-64 bg-gray-200 rounded mb-6"></div>
-          <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen" style={{ 
+    <div className="min-h-screen" style={{
       backgroundColor: '#b3dfa1',
       backgroundImage: 'linear-gradient(315deg, #b3dfa1 0%, #f0e703 74%)'
     }}>
@@ -56,8 +28,8 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         {/* Back button */}
         <div className="mb-6">
-          <Link 
-            href="/community" 
+          <Link
+            href="/community"
             className="inline-flex items-center text-green-600 hover:text-green-700"
           >
             <FiArrowLeft className="mr-2" /> Back to Events
@@ -139,7 +111,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Attendees</p>
-                  <p className="font-medium">{Math.floor(Math.random() * 50) + 20} registered</p>
+                  <p className="font-medium">42 registered</p>
                 </div>
               </div>
             </div>
@@ -198,7 +170,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                       </span>
                     </div>
                     <h3 className="font-medium text-gray-900 mb-1">{relatedEvent.title}</h3>
-                    <Link 
+                    <Link
                       href={`/events/${relatedEvent.id}`}
                       className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
                     >

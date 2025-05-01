@@ -1,6 +1,3 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -9,38 +6,13 @@ import groupsData from '@/data/groups.json';
 import eventsData from '@/data/events.json';
 
 export default function GroupDetailPage({ params }: { params: { id: string } }) {
-  const [group, setGroup] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Find the group with the matching ID
-    const groupId = parseInt(params.id);
-    const foundGroup = groupsData.groups.find(g => g.id === groupId);
-    
-    if (foundGroup) {
-      setGroup(foundGroup);
-    }
-    setLoading(false);
-  }, [params.id]);
+  // Find the group with the matching ID
+  const groupId = parseInt(params.id);
+  const group = groupsData.groups.find(g => g.id === groupId);
 
   // Show 404 if group not found
-  if (!loading && !group) {
+  if (!group) {
     notFound();
-  }
-
-  if (loading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-64 bg-gray-200 rounded mb-6"></div>
-          <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-        </div>
-      </div>
-    );
   }
 
   // Get random events related to this group's category
@@ -73,7 +45,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
   ];
 
   return (
-    <div className="min-h-screen" style={{ 
+    <div className="min-h-screen" style={{
       backgroundColor: '#b3dfa1',
       backgroundImage: 'linear-gradient(315deg, #b3dfa1 0%, #f0e703 74%)'
     }}>
@@ -86,8 +58,8 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         {/* Back button */}
         <div className="mb-6">
-          <Link 
-            href="/community" 
+          <Link
+            href="/community"
             className="inline-flex items-center text-green-600 hover:text-green-700"
           >
             <FiArrowLeft className="mr-2" /> Back to Groups
@@ -136,7 +108,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
               <div className="prose max-w-none text-gray-600">
                 <p className="mb-4">{group.description}</p>
                 <p className="mb-4">
-                  Our community is dedicated to sharing knowledge, resources, and opportunities in the field of {group.category.toLowerCase()}. 
+                  Our community is dedicated to sharing knowledge, resources, and opportunities in the field of {group.category.toLowerCase()}.
                   Whether you're just starting your journey or are an experienced professional, you'll find valuable connections and insights here.
                 </p>
                 <p>
@@ -202,7 +174,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
                         </div>
                         <h3 className="font-medium text-gray-900 mb-1">{event.title}</h3>
                         <p className="text-sm text-gray-500 mb-3 line-clamp-2">{event.description}</p>
-                        <Link 
+                        <Link
                           href={`/events/${event.id}`}
                           className="text-sm text-green-600 hover:text-green-500 inline-block"
                         >
@@ -249,7 +221,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
                       </span>
                     </div>
                     <h3 className="font-medium text-gray-900 mb-1">{relatedGroup.name}</h3>
-                    <Link 
+                    <Link
                       href={`/groups/${relatedGroup.id}`}
                       className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
                     >
