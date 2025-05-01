@@ -20,10 +20,15 @@ export default function Navbar() {
     { href: '/about', label: 'About' },
   ];
 
-  const authLinks = [
-    { href: '/login', label: 'Login' },
-    { href: '/register', label: 'Register' },
-  ];
+  // For demo purposes, we'll assume the user is logged in
+  const isLoggedIn = true;
+
+  const authLinks = isLoggedIn
+    ? [{ href: '/profile', label: 'My Dashboard' }]
+    : [
+        { href: '/login', label: 'Login' },
+        { href: '/register', label: 'Register' },
+      ];
 
   return (
     <nav className="bg-white shadow-md">
@@ -57,7 +62,9 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`${
-                  link.label === 'Register'
+                  isLoggedIn
+                    ? 'bg-green-600 text-white hover:bg-green-700'
+                    : link.label === 'Register'
                     ? 'bg-green-600 text-white hover:bg-green-700'
                     : 'text-gray-500 hover:text-gray-700'
                 } px-3 py-2 rounded-md text-sm font-medium`}
@@ -134,7 +141,11 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  className={`${
+                    isLoggedIn
+                      ? 'bg-green-50 border-green-500 text-green-700'
+                      : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
+                  } block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
                 >
                   {link.label}
                 </Link>
