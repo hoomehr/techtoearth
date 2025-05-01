@@ -1,17 +1,38 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import EventCard from '@/components/cards/EventCard';
 import GroupCard from '@/components/cards/GroupCard';
 import SectionHeader from '@/components/SectionHeader';
-import eventsData from '@/data/events.json';
-import groupsData from '@/data/groups.json';
-
-export const metadata = {
-  title: 'Community | TechToEarth',
-  description: 'Join our community of tech professionals transitioning to agriculture',
-};
 
 export default function CommunityPage() {
+  const [events, setEvents] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch events
+        const eventsResponse = await fetch('/api/events');
+        const eventsData = await eventsResponse.json();
+        setEvents(eventsData.events);
+
+        // Fetch groups
+        const groupsResponse = await fetch('/api/groups');
+        const groupsData = await groupsResponse.json();
+        setGroups(groupsData.groups);
+      } catch (error) {
+        console.error('Error fetching community data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
     <div>
       {/* Hero section */}
@@ -51,21 +72,27 @@ export default function CommunityPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {eventsData.events.map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                title={event.title}
-                description={event.description}
-                date={event.date}
-                time={event.time}
-                location={event.location}
-                isVirtual={event.isVirtual}
-                image={event.image}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900">Loading events...</h3>
+            </div>
+          ) : (
+            <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {events.map((event) => (
+                <EventCard
+                  key={event.id}
+                  id={event.id}
+                  title={event.title}
+                  description={event.description}
+                  date={event.date}
+                  time={event.time}
+                  location={event.location}
+                  isVirtual={event.isVirtual}
+                  image={event.image}
+                />
+              ))}
+            </div>
+          )}
 
           <div className="mt-10 text-center">
             <Link
@@ -99,19 +126,25 @@ export default function CommunityPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {groupsData.groups.map((group) => (
-              <GroupCard
-                key={group.id}
-                id={group.id}
-                name={group.name}
-                description={group.description}
-                memberCount={group.memberCount}
-                category={group.category}
-                image={group.image}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900">Loading groups...</h3>
+            </div>
+          ) : (
+            <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {groups.map((group) => (
+                <GroupCard
+                  key={group.id}
+                  id={group.id}
+                  name={group.name}
+                  description={group.description}
+                  memberCount={group.memberCount}
+                  category={group.category}
+                  image={group.image}
+                />
+              ))}
+            </div>
+          )}
 
           <div className="mt-10 text-center">
             <Link

@@ -1,46 +1,62 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import CourseCard from '@/components/cards/CourseCard';
 import CourseFilterBar from '@/components/filters/CourseFilterBar';
 import SectionHeaderWithDivider from '@/components/SectionHeaderWithDivider';
-// Import the data access functions
-import { getCourses } from '@/app/api/data';
-import coursesData from '@/data/courses.json';
 
 // Metadata is moved to a separate file when using client components
 
 export default function CoursesPage() {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     search: '',
     levels: [] as string[],
     topics: [] as string[],
   });
 
+  // Fetch courses from API
+  useEffect(() => {
+    async function fetchCourses() {
+      try {
+        const response = await fetch('/api/courses');
+        const data = await response.json();
+        setCourses(data.courses);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCourses();
+  }, []);
+
   // Extract all unique levels and topics from courses
   const allLevels = useMemo(() => {
     const levels = new Set<string>();
-    coursesData.courses.forEach(course => {
+    courses.forEach(course => {
       levels.add(course.level);
     });
     return Array.from(levels);
-  }, []);
+  }, [courses]);
 
   const allTopics = useMemo(() => {
     const topics = new Set<string>();
-    coursesData.courses.forEach(course => {
+    courses.forEach(course => {
       course.topics.forEach(topic => {
         topics.add(topic);
       });
     });
     return Array.from(topics);
-  }, []);
+  }, [courses]);
 
   // Filter courses based on search and selected filters
   const filteredCourses = useMemo(() => {
-    return coursesData.courses.filter(course => {
+    return courses.filter(course => {
       // Filter by search term
       const searchMatch = !filters.search ||
         course.title.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -56,7 +72,7 @@ export default function CoursesPage() {
 
       return searchMatch && levelMatch && topicMatch;
     });
-  }, [filters]);
+  }, [courses, filters]);
 
   return (
     <div>
@@ -90,38 +106,46 @@ export default function CoursesPage() {
         </div>
 
         <div className="mt-12" id="courses">
-          <CourseFilterBar
-            levels={allLevels}
-            topics={allTopics}
-            onFilterChange={setFilters}
-            coursesData={coursesData.courses}
-          />
-
-          {filteredCourses.length === 0 ? (
+          {loading ? (
             <div className="text-center py-12">
-              <h3 className="text-lg font-medium text-gray-900">No courses found</h3>
-              <p className="mt-2 text-gray-500">Try adjusting your filters or search term</p>
+              <h3 className="text-lg font-medium text-gray-900">Loading courses...</h3>
             </div>
           ) : (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {filteredCourses.map((course) => (
-                <CourseCard
-                  key={course.id}
-                  id={course.id}
-                  title={course.title}
-                  description={course.description}
-                  level={course.level}
-                  duration={course.duration}
-                  image={course.image}
-                />
-              ))}
-            </div>
-          )}
+            <>
+              <CourseFilterBar
+                levels={allLevels}
+                topics={allTopics}
+                onFilterChange={setFilters}
+                coursesData={courses}
+              />
 
-          {filteredCourses.length > 0 && (
-            <div className="mt-8 text-center text-gray-500">
-              Showing {filteredCourses.length} of {coursesData.courses.length} courses
-            </div>
+              {filteredCourses.length === 0 ? (
+                <div className="text-center py-12">
+                  <h3 className="text-lg font-medium text-gray-900">No courses found</h3>
+                  <p className="mt-2 text-gray-500">Try adjusting your filters or search term</p>
+                </div>
+              ) : (
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredCourses.map((course) => (
+                    <CourseCard
+                      key={course.id}
+                      id={course.id}
+                      title={course.title}
+                      description={course.description}
+                      level={course.level}
+                      duration={course.duration}
+                      image={course.image}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {filteredCourses.length > 0 && (
+                <div className="mt-8 text-center text-gray-500">
+                  Showing {filteredCourses.length} of {courses.length} courses
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

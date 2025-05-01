@@ -1,23 +1,69 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { FiUsers, FiCalendar, FiMessageSquare, FiArrowLeft, FiShare2, FiUserPlus } from 'react-icons/fi';
-import groupsData from '@/data/groups.json';
-import eventsData from '@/data/events.json';
 
 export default function GroupDetailPage({ params }: { params: { id: string } }) {
-  // Find the group with the matching ID
   const groupId = parseInt(params.id);
-  const group = groupsData.groups.find(g => g.id === groupId);
+  const [group, setGroup] = useState(null);
+  const [relatedGroups, setRelatedGroups] = useState([]);
+  const [relatedEvents, setRelatedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch the specific group
+        const response = await fetch(`/api/groups/${groupId}`);
+        if (!response.ok) {
+          throw new Error('Group not found');
+        }
+        const data = await response.json();
+        setGroup(data);
+
+        // Fetch all groups for related groups section
+        const allGroupsResponse = await fetch('/api/groups');
+        const allGroupsData = await allGroupsResponse.json();
+        setRelatedGroups(
+          allGroupsData.groups
+            .filter(g => g.id !== groupId && g.category === data.category)
+            .slice(0, 3)
+        );
+
+        // Fetch events for related events section
+        const eventsResponse = await fetch('/api/events');
+        const eventsData = await eventsResponse.json();
+        setRelatedEvents(eventsData.events.slice(0, 2));
+      } catch (error) {
+        console.error('Error fetching group data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [groupId]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-extrabold text-gray-900">Loading Group...</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Show 404 if group not found
   if (!group) {
     notFound();
   }
-
-  // Get random events related to this group's category
-  const relatedEvents = eventsData.events
-    .slice(0, 2);
 
   // Generate random discussion topics
   const discussionTopics = [
@@ -197,39 +243,36 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            {groupsData.groups
-              .filter(g => g.id !== group.id && g.category === group.category)
-              .slice(0, 3)
-              .map(relatedGroup => (
-                <div key={relatedGroup.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="h-40 relative">
-                    <Image
-                      src={relatedGroup.image}
-                      alt={relatedGroup.name}
-                      fill
-                      className="object-cover"
-                      unoptimized={true}
-                    />
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                        {relatedGroup.category}
-                      </span>
-                      <span className="text-sm text-gray-500 flex items-center">
-                        <FiUsers className="mr-1" /> {relatedGroup.memberCount}
-                      </span>
-                    </div>
-                    <h3 className="font-medium text-gray-900 mb-1">{relatedGroup.name}</h3>
-                    <Link
-                      href={`/groups/${relatedGroup.id}`}
-                      className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
-                    >
-                      View Group →
-                    </Link>
-                  </div>
+            {relatedGroups.map(relatedGroup => (
+              <div key={relatedGroup.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="h-40 relative">
+                  <Image
+                    src={relatedGroup.image}
+                    alt={relatedGroup.name}
+                    fill
+                    className="object-cover"
+                    unoptimized={true}
+                  />
                 </div>
-              ))}
+                <div className="p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                      {relatedGroup.category}
+                    </span>
+                    <span className="text-sm text-gray-500 flex items-center">
+                      <FiUsers className="mr-1" /> {relatedGroup.memberCount}
+                    </span>
+                  </div>
+                  <h3 className="font-medium text-gray-900 mb-1">{relatedGroup.name}</h3>
+                  <Link
+                    href={`/groups/${relatedGroup.id}`}
+                    className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
+                  >
+                    View Group →
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

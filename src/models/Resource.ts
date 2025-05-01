@@ -1,24 +1,28 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IResource extends Document {
+  id: number;
   title: string;
   description: string;
-  category: string;
+  type: string;
+  author: string;
+  url: string;
   image: string;
-  link: string;
-  author?: string;
+  category: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const ResourceSchema: Schema = new Schema(
   {
+    id: { type: Number, required: true, unique: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    category: { type: String, required: true },
+    type: { type: String, required: true },
+    author: { type: String, required: true },
+    url: { type: String, required: true },
     image: { type: String, required: true },
-    link: { type: String, required: true },
-    author: { type: String },
+    category: { type: String, required: true },
   },
   { timestamps: true }
 );

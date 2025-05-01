@@ -1,10 +1,40 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import SuccessStoryCard from "@/components/cards/SuccessStoryCard";
 import SectionHeader from "@/components/SectionHeader";
-import successStoriesData from "@/data/successStories.json";
+
+
 
 export default function Home() {
+  const [courses, setCourses] = useState([]);
+  const [successStories, setSuccessStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch courses
+        const coursesResponse = await fetch('/api/courses');
+        const coursesData = await coursesResponse.json();
+        setCourses(coursesData.courses);
+
+        // Fetch success stories
+        const storiesResponse = await fetch('/api/success-stories');
+        const storiesData = await storiesResponse.json();
+        setSuccessStories(storiesData.successStories.slice(0, 3));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       {/* Hero section */}
@@ -78,19 +108,25 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {successStoriesData.successStories.slice(0, 3).map((story) => (
-              <SuccessStoryCard
-                key={story.id}
-                name={story.name}
-                formerRole={story.formerRole}
-                currentRole={story.currentRole}
-                testimonial={story.testimonial}
-                transitionYear={story.transitionYear}
-                imageSrc={story.imageSrc}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900">Loading success stories...</h3>
+            </div>
+          ) : (
+            <div className="mt-12 grid gap-8 md:grid-cols-3">
+              {successStories.map((story) => (
+                <SuccessStoryCard
+                  key={story.id}
+                  name={story.name}
+                  formerRole={story.formerRole}
+                  currentRole={story.currentRole}
+                  testimonial={story.testimonial}
+                  transitionYear={story.transitionYear}
+                  imageSrc={story.imageSrc}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

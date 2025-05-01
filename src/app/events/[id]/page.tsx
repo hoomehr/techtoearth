@@ -1,13 +1,54 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { FiCalendar, FiClock, FiMapPin, FiMonitor, FiUsers, FiArrowLeft, FiShare2 } from 'react-icons/fi';
-import eventsData from '@/data/events.json';
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
-  // Find the event with the matching ID
   const eventId = parseInt(params.id);
-  const event = eventsData.events.find(e => e.id === eventId);
+  const [event, setEvent] = useState(null);
+  const [relatedEvents, setRelatedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        // Fetch the specific event
+        const response = await fetch(`/api/events/${eventId}`);
+        if (!response.ok) {
+          throw new Error('Event not found');
+        }
+        const data = await response.json();
+        setEvent(data);
+
+        // Fetch all events for related events section
+        const allEventsResponse = await fetch('/api/events');
+        const allEventsData = await allEventsResponse.json();
+        setRelatedEvents(allEventsData.events.filter(e => e.id !== eventId).slice(0, 3));
+      } catch (error) {
+        console.error('Error fetching event:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchEvent();
+  }, [eventId]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-extrabold text-gray-900">Loading Event...</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Show 404 if event not found
   if (!event) {
@@ -148,37 +189,34 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            {eventsData.events
-              .filter(e => e.id !== event.id)
-              .slice(0, 3)
-              .map(relatedEvent => (
-                <div key={relatedEvent.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="h-40 relative">
-                    <Image
-                      src={relatedEvent.image}
-                      alt={relatedEvent.title}
-                      fill
-                      className="object-cover"
-                      unoptimized={true}
-                    />
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-green-600">{relatedEvent.date}</span>
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                        {relatedEvent.isVirtual ? 'Virtual' : 'In-Person'}
-                      </span>
-                    </div>
-                    <h3 className="font-medium text-gray-900 mb-1">{relatedEvent.title}</h3>
-                    <Link
-                      href={`/events/${relatedEvent.id}`}
-                      className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
-                    >
-                      View Details →
-                    </Link>
-                  </div>
+            {relatedEvents.map(relatedEvent => (
+              <div key={relatedEvent.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="h-40 relative">
+                  <Image
+                    src={relatedEvent.image}
+                    alt={relatedEvent.title}
+                    fill
+                    className="object-cover"
+                    unoptimized={true}
+                  />
                 </div>
-              ))}
+                <div className="p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-green-600">{relatedEvent.date}</span>
+                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                      {relatedEvent.isVirtual ? 'Virtual' : 'In-Person'}
+                    </span>
+                  </div>
+                  <h3 className="font-medium text-gray-900 mb-1">{relatedEvent.title}</h3>
+                  <Link
+                    href={`/events/${relatedEvent.id}`}
+                    className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
+                  >
+                    View Details →
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

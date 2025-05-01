@@ -1,26 +1,44 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import ResourceCard from '@/components/cards/ResourceCard';
 import SectionHeader from '@/components/SectionHeader';
-import resourcesData from '@/data/resources.json';
-
-export const metadata = {
-  title: 'Resources | TechToEarth',
-  description: 'Explore our collection of resources for tech professionals transitioning to agriculture',
-};
 
 export default function ResourcesPage() {
-  // Group resources by category
-  const resourcesByCategory = resourcesData.resources.reduce((acc, resource) => {
-    if (!acc[resource.category]) {
-      acc[resource.category] = [];
-    }
-    acc[resource.category].push(resource);
-    return acc;
-  }, {} as Record<string, typeof resourcesData.resources>);
+  const [resources, setResources] = useState([]);
+  const [resourcesByCategory, setResourcesByCategory] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Get unique categories
-  const categories = Object.keys(resourcesByCategory);
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const response = await fetch('/api/resources');
+        const data = await response.json();
+        setResources(data.resources);
+
+        // Group resources by category
+        const groupedResources = data.resources.reduce((acc, resource) => {
+          if (!acc[resource.category]) {
+            acc[resource.category] = [];
+          }
+          acc[resource.category].push(resource);
+          return acc;
+        }, {});
+
+        setResourcesByCategory(groupedResources);
+        setCategories(Object.keys(groupedResources));
+      } catch (error) {
+        console.error('Error fetching resources:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchResources();
+  }, []);
 
   return (
     <div>
@@ -62,41 +80,51 @@ export default function ResourcesPage() {
       {/* Resources Grid */}
       <div className="py-12" id="books">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {categories.map((category) => (
-            <div key={category} className="mb-16" id={category.toLowerCase().replace(/\s+/g, '-')}>
-              <div className="text-left mb-6">
-                <div className="mb-2">
-                  <h2 className="text-3xl font-bold text-gray-900">
-                    {category}
-                  </h2>
-                </div>
-                <div className="flex items-center mb-4">
-                  <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">
-                    {category === "Books" ? "Essential Reading" :
-                     category === "Guides & PDFs" ? "Practical Knowledge" :
-                     "Learn & Listen"}
-                  </p>
-                  <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {resourcesByCategory[category].map((resource) => (
-                  <ResourceCard
-                    key={resource.id}
-                    id={resource.id}
-                    title={resource.title}
-                    description={resource.description}
-                    type={resource.type}
-                    author={resource.author}
-                    url={resource.url}
-                    image={resource.image}
-                    category={resource.category}
-                  />
-                ))}
-              </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900">Loading resources...</h3>
             </div>
-          ))}
+          ) : categories.length === 0 ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900">No resources found</h3>
+            </div>
+          ) : (
+            categories.map((category) => (
+              <div key={category} className="mb-16" id={category.toLowerCase().replace(/\s+/g, '-')}>
+                <div className="text-left mb-6">
+                  <div className="mb-2">
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      {category}
+                    </h2>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <p className="text-green-600 text-xl sm:text-2xl font-semibold mr-4">
+                      {category === "Books" ? "Essential Reading" :
+                       category === "Guides & PDFs" ? "Practical Knowledge" :
+                       "Learn & Listen"}
+                    </p>
+                    <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {resourcesByCategory[category].map((resource) => (
+                    <ResourceCard
+                      key={resource.id}
+                      id={resource.id}
+                      title={resource.title}
+                      description={resource.description}
+                      type={resource.type}
+                      author={resource.author}
+                      url={resource.url}
+                      image={resource.image}
+                      category={resource.category}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

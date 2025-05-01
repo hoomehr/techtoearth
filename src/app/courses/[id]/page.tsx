@@ -3,14 +3,50 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import RelatedCoursesSection from '@/components/cards/RelatedCoursesSection';
 import EnrollCourseCard from '@/components/cards/EnrollCourseCard';
-import coursesData from '@/data/courses.json';
 
 export default function CourseDetailsPage() {
   const params = useParams();
   const courseId = parseInt(params.id as string);
-  const course = coursesData.courses.find(c => c.id === courseId);
+  const [course, setCourse] = useState(null);
+  const [allCourses, setAllCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCourse() {
+      try {
+        // Fetch the specific course
+        const response = await fetch(`/api/courses/${courseId}`);
+        const data = await response.json();
+        setCourse(data);
+
+        // Fetch all courses for related courses section
+        const allCoursesResponse = await fetch('/api/courses');
+        const allCoursesData = await allCoursesResponse.json();
+        setAllCourses(allCoursesData.courses);
+      } catch (error) {
+        console.error('Error fetching course:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCourse();
+  }, [courseId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-extrabold text-gray-900">Loading Course...</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!course) {
     return (
@@ -137,7 +173,7 @@ export default function CourseDetailsPage() {
       {/* Related courses */}
       <RelatedCoursesSection
         currentCourseId={course.id}
-        courses={coursesData.courses}
+        courses={allCourses}
         level={course.level}
       />
     </div>
