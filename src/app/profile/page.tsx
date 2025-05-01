@@ -7,28 +7,28 @@ import { FiUser, FiBook, FiUsers, FiCalendar, FiSettings, FiHeart, FiBookmark, F
 import coursesData from '@/data/courses.json';
 import eventsData from '@/data/events.json';
 import groupsData from '@/data/groups.json';
+import usersData from '@/data/users.json';
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('courses');
 
-  // Mock user data
-  const user = {
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
-    avatar: 'https://placehold.co/400x400/4B7F52/FFFFFF?text=JS',
-    bio: 'Former software engineer transitioning to sustainable agriculture. Passionate about permaculture and regenerative farming practices.',
-    location: 'Portland, OR',
-    joinedDate: 'January 2023',
-  };
+  // Get the current user (using the first user from our mock data)
+  const currentUser = usersData.users[0];
 
-  // Mock enrolled courses (using a subset of the courses data)
-  const enrolledCourses = coursesData.courses.slice(0, 3);
+  // Get enrolled courses based on user data
+  const enrolledCourses = coursesData.courses.filter(course =>
+    currentUser.enrolledCourses.includes(course.id)
+  );
 
-  // Mock saved events (using a subset of the events data)
-  const savedEvents = eventsData.events.slice(0, 4);
+  // Get saved events based on user data
+  const savedEvents = eventsData.events.filter(event =>
+    currentUser.savedEvents.includes(event.id)
+  );
 
-  // Mock joined groups (using a subset of the groups data)
-  const joinedGroups = groupsData.groups.slice(0, 2);
+  // Get joined groups based on user data
+  const joinedGroups = groupsData.groups.filter(group =>
+    currentUser.joinedGroups.includes(group.id)
+  );
 
   return (
     <div className="min-h-screen" style={{
@@ -65,8 +65,8 @@ export default function ProfilePage() {
             <div className="md:flex-shrink-0 mb-4 md:mb-0 md:mr-6">
               <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-green-100">
                 <Image
-                  src={user.avatar}
-                  alt={user.name}
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
                   fill
                   className="object-cover"
                 />
@@ -75,9 +75,9 @@ export default function ProfilePage() {
             <div className="flex-1">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{currentUser.name}</h2>
                   <div className="h-1 w-16 bg-gradient-to-r from-green-500 to-transparent rounded-full my-2"></div>
-                  <p className="text-gray-600">{user.email}</p>
+                  <p className="text-gray-600">{currentUser.email}</p>
                 </div>
                 <div className="mt-2 md:mt-0">
                   <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
@@ -86,14 +86,14 @@ export default function ProfilePage() {
                 </div>
               </div>
               <div className="mb-4">
-                <p className="text-gray-700">{user.bio}</p>
+                <p className="text-gray-700">{currentUser.bio}</p>
               </div>
               <div className="flex flex-wrap text-sm text-gray-600">
                 <div className="mr-6 mb-2">
-                  <span className="font-medium">Location:</span> {user.location}
+                  <span className="font-medium">Location:</span> {currentUser.location}
                 </div>
                 <div className="mr-6 mb-2">
-                  <span className="font-medium">Member since:</span> {user.joinedDate}
+                  <span className="font-medium">Member since:</span> {currentUser.joinedDate}
                 </div>
                 <div className="mr-6 mb-2">
                   <span className="font-medium">Courses:</span> {enrolledCourses.length}

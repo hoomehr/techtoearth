@@ -1,0 +1,266 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { FiUsers, FiCalendar, FiMessageSquare, FiArrowLeft, FiShare2, FiUserPlus } from 'react-icons/fi';
+import groupsData from '@/data/groups.json';
+import eventsData from '@/data/events.json';
+
+export default function GroupDetailPage({ params }: { params: { id: string } }) {
+  const [group, setGroup] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Find the group with the matching ID
+    const groupId = parseInt(params.id);
+    const foundGroup = groupsData.groups.find(g => g.id === groupId);
+    
+    if (foundGroup) {
+      setGroup(foundGroup);
+    }
+    setLoading(false);
+  }, [params.id]);
+
+  // Show 404 if group not found
+  if (!loading && !group) {
+    notFound();
+  }
+
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="h-64 bg-gray-200 rounded mb-6"></div>
+          <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded mb-2"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Get random events related to this group's category
+  const relatedEvents = eventsData.events
+    .slice(0, 2);
+
+  // Generate random discussion topics
+  const discussionTopics = [
+    {
+      id: 1,
+      title: `Latest trends in ${group.category}`,
+      author: "Sarah Johnson",
+      replies: 24,
+      lastActivity: "2 days ago"
+    },
+    {
+      id: 2,
+      title: `Resources for beginners in ${group.category}`,
+      author: "Michael Chen",
+      replies: 18,
+      lastActivity: "5 days ago"
+    },
+    {
+      id: 3,
+      title: `Challenges and solutions in ${group.name}`,
+      author: "Emily Rodriguez",
+      replies: 32,
+      lastActivity: "1 day ago"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen" style={{ 
+      backgroundColor: '#b3dfa1',
+      backgroundImage: 'linear-gradient(315deg, #b3dfa1 0%, #f0e703 74%)'
+    }}>
+      {/* Background decorative elements */}
+      <div className="fixed top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-green-200 rounded-full opacity-20 blur-3xl z-0"></div>
+      <div className="fixed bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-yellow-200 rounded-full opacity-20 blur-3xl z-0"></div>
+      <div className="fixed top-1/3 left-1/4 w-40 h-40 bg-green-300 rounded-full opacity-10 blur-2xl z-0"></div>
+      <div className="fixed bottom-1/3 right-1/4 w-60 h-60 bg-yellow-300 rounded-full opacity-10 blur-2xl z-0"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+        {/* Back button */}
+        <div className="mb-6">
+          <Link 
+            href="/community" 
+            className="inline-flex items-center text-green-600 hover:text-green-700"
+          >
+            <FiArrowLeft className="mr-2" /> Back to Groups
+          </Link>
+        </div>
+
+        {/* Group header */}
+        <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-xl shadow-xl overflow-hidden">
+          <div className="relative h-80 w-full">
+            <Image
+              src={group.image}
+              alt={group.name}
+              fill
+              className="object-cover"
+              unoptimized={true}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+              <div className="inline-block mb-4">
+                <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  {group.category}
+                </span>
+              </div>
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl mb-2">
+                {group.name}
+              </h1>
+              <div className="flex items-center">
+                <FiUsers className="mr-2" /> {group.memberCount} members
+              </div>
+            </div>
+          </div>
+
+          {/* Group details */}
+          <div className="p-8">
+            <div className="flex flex-wrap gap-4 mb-8">
+              <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
+                <FiUserPlus className="mr-2" /> Join Group
+              </button>
+              <button className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <FiShare2 className="mr-2" /> Share Group
+              </button>
+            </div>
+
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Group</h2>
+              <div className="prose max-w-none text-gray-600">
+                <p className="mb-4">{group.description}</p>
+                <p className="mb-4">
+                  Our community is dedicated to sharing knowledge, resources, and opportunities in the field of {group.category.toLowerCase()}. 
+                  Whether you're just starting your journey or are an experienced professional, you'll find valuable connections and insights here.
+                </p>
+                <p>
+                  We host regular virtual and in-person events, maintain an active discussion forum, and share the latest news and resources in our field.
+                  Join us today to become part of this growing community!
+                </p>
+              </div>
+            </div>
+
+            {/* Discussion topics */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-gray-900">Recent Discussions</h2>
+                <button className="text-green-600 hover:text-green-700 font-medium">View All</button>
+              </div>
+              <div className="bg-gray-50 rounded-lg divide-y divide-gray-200">
+                {discussionTopics.map(topic => (
+                  <div key={topic.id} className="p-4 hover:bg-gray-100 transition-colors duration-150">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-medium text-gray-900">{topic.title}</h3>
+                        <p className="text-sm text-gray-500">Started by {topic.author}</p>
+                      </div>
+                      <div className="text-right text-sm text-gray-500">
+                        <div className="flex items-center">
+                          <FiMessageSquare className="mr-1" /> {topic.replies} replies
+                        </div>
+                        <div>Last activity: {topic.lastActivity}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Upcoming events */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-gray-900">Upcoming Group Events</h2>
+                <button className="text-green-600 hover:text-green-700 font-medium">View All</button>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                {relatedEvents.map(event => (
+                  <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                    <div className="md:flex">
+                      <div className="md:flex-shrink-0 h-48 md:h-auto md:w-48 relative">
+                        <Image
+                          src={event.image}
+                          alt={event.title}
+                          fill
+                          className="object-cover"
+                          unoptimized={true}
+                        />
+                      </div>
+                      <div className="p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <FiCalendar className="mr-1" /> {event.date}
+                          </div>
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                            {event.isVirtual ? 'Virtual' : 'In-Person'}
+                          </span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 mb-1">{event.title}</h3>
+                        <p className="text-sm text-gray-500 mb-3 line-clamp-2">{event.description}</p>
+                        <Link 
+                          href={`/events/${event.id}`}
+                          className="text-sm text-green-600 hover:text-green-500 inline-block"
+                        >
+                          View Details →
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Similar groups */}
+        <div className="mt-16">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Similar Groups You Might Like</h2>
+            <div className="h-1 w-32 bg-gradient-to-r from-green-500 to-transparent rounded-full mt-2"></div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {groupsData.groups
+              .filter(g => g.id !== group.id && g.category === group.category)
+              .slice(0, 3)
+              .map(relatedGroup => (
+                <div key={relatedGroup.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div className="h-40 relative">
+                    <Image
+                      src={relatedGroup.image}
+                      alt={relatedGroup.name}
+                      fill
+                      className="object-cover"
+                      unoptimized={true}
+                    />
+                  </div>
+                  <div className="p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                        {relatedGroup.category}
+                      </span>
+                      <span className="text-sm text-gray-500 flex items-center">
+                        <FiUsers className="mr-1" /> {relatedGroup.memberCount}
+                      </span>
+                    </div>
+                    <h3 className="font-medium text-gray-900 mb-1">{relatedGroup.name}</h3>
+                    <Link 
+                      href={`/groups/${relatedGroup.id}`}
+                      className="text-sm text-green-600 hover:text-green-500 mt-2 inline-block"
+                    >
+                      View Group →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
