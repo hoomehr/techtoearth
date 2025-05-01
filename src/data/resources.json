@@ -1,0 +1,124 @@
+{
+  "resources": [
+    {
+      "id": 1,
+      "title": "The Urban Farmer",
+      "description": "A comprehensive guide to small-scale organic farming in urban environments.",
+      "type": "book",
+      "author": "Curtis Stone",
+      "url": "https://example.com/urban-farmer",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Urban+Farmer",
+      "category": "Books"
+    },
+    {
+      "id": 2,
+      "title": "The Market Gardener",
+      "description": "A successful grower's handbook for small-scale organic farming.",
+      "type": "book",
+      "author": "Jean-Martin Fortier",
+      "url": "https://example.com/market-gardener",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Market+Gardener",
+      "category": "Books"
+    },
+    {
+      "id": 3,
+      "title": "Farming While Black",
+      "description": "Soul Fire Farm's practical guide to liberation on the land.",
+      "type": "book",
+      "author": "Leah Penniman",
+      "url": "https://example.com/farming-while-black",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Farming+While+Black",
+      "category": "Books"
+    },
+    {
+      "id": 4,
+      "title": "The New Farm",
+      "description": "Our ten years on the front lines of the good food revolution.",
+      "type": "book",
+      "author": "Brent Preston",
+      "url": "https://example.com/new-farm",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=The+New+Farm",
+      "category": "Books"
+    },
+    {
+      "id": 5,
+      "title": "Beginner's Guide to Hydroponics",
+      "description": "A comprehensive introduction to hydroponic growing systems for beginners.",
+      "type": "pdf",
+      "author": "TechToEarth Team",
+      "url": "https://example.com/hydroponics-guide",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Hydroponics+Guide",
+      "category": "Guides & PDFs"
+    },
+    {
+      "id": 6,
+      "title": "Soil Health Assessment",
+      "description": "Learn how to assess and improve your soil health with this practical guide.",
+      "type": "pdf",
+      "author": "Soil Science Institute",
+      "url": "https://example.com/soil-health",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Soil+Health",
+      "category": "Guides & PDFs"
+    },
+    {
+      "id": 7,
+      "title": "Tech Integration in Small Farms",
+      "description": "A practical guide to implementing technology on small-scale farms.",
+      "type": "pdf",
+      "author": "AgTech Alliance",
+      "url": "https://example.com/tech-integration",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Tech+Integration",
+      "category": "Guides & PDFs"
+    },
+    {
+      "id": 8,
+      "title": "Farm Business Planning Template",
+      "description": "A comprehensive template for creating a business plan for your farm venture.",
+      "type": "pdf",
+      "author": "Farm Business Advisors",
+      "url": "https://example.com/business-plan",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Business+Plan",
+      "category": "Guides & PDFs"
+    },
+    {
+      "id": 9,
+      "title": "Introduction to Permaculture",
+      "description": "Learn the basics of permaculture design and implementation in this video series.",
+      "type": "video",
+      "author": "Permaculture Research Institute",
+      "url": "https://example.com/permaculture-intro",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Permaculture+Video",
+      "category": "Videos & Podcasts"
+    },
+    {
+      "id": 10,
+      "title": "Farm Hack Podcast",
+      "description": "Weekly interviews with innovative farmers using technology to solve agricultural challenges.",
+      "type": "podcast",
+      "author": "Tech Farmers Network",
+      "url": "https://example.com/farm-hack-podcast",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Farm+Hack+Podcast",
+      "category": "Videos & Podcasts"
+    },
+    {
+      "id": 11,
+      "title": "Vertical Farming Masterclass",
+      "description": "A comprehensive video course on setting up and managing vertical farming operations.",
+      "type": "video",
+      "author": "Urban Agriculture Institute",
+      "url": "https://example.com/vertical-farming",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Vertical+Farming",
+      "category": "Videos & Podcasts"
+    },
+    {
+      "id": 12,
+      "title": "From Code to Crops Podcast",
+      "description": "Stories of tech professionals who successfully transitioned to careers in agriculture.",
+      "type": "podcast",
+      "author": "TechToEarth",
+      "url": "https://example.com/code-to-crops",
+      "image": "https://placehold.co/400x600/4B7F52/FFFFFF?text=Code+to+Crops",
+      "category": "Videos & Podcasts"
+    }
+  ]
+}

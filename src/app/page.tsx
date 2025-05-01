@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SuccessStoryCard from "@/components/cards/SuccessStoryCard";
+import PageHeader from "@/components/PageHeader";
 import successStoriesData from "@/data/successStories.json";
 
 export default function Home() {
@@ -21,12 +22,20 @@ export default function Home() {
               <div className="absolute inset-0 bg-green-800 mix-blend-multiply opacity-80" />
             </div>
             <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
-              <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
-                <span className="block text-white drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>Your New Career Begins Here</span>
-              </h1>
-              <p className="mt-6 max-w-lg mx-auto text-center text-xl text-white sm:max-w-3xl">
-                A platform for tech professionals looking to transition into agriculture, food, and beverage industries.
-              </p>
+              <div className="text-center">
+                <div className="inline-block mb-4">
+                  <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white bg-opacity-20 text-white">
+                    Welcome
+                  </span>
+                </div>
+                <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
+                  <span className="block text-white drop-shadow-lg mb-2" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>Your New Career Begins Here</span>
+                  <span className="block text-green-200 text-3xl sm:text-4xl md:text-5xl">From Tech to Agriculture</span>
+                </h1>
+                <p className="mt-6 max-w-lg mx-auto text-center text-xl text-white sm:max-w-3xl">
+                  A platform for tech professionals looking to transition into agriculture, food, and beverage industries.
+                </p>
+              </div>
               <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
                 <div className="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5">
                   <Link
@@ -52,11 +61,16 @@ export default function Home() {
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">Success Stories</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              From Tech to Earth: Real Transitions
-            </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Success Stories
+              </span>
+            </div>
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block mb-2">From Tech to Earth</span>
+              <span className="block text-green-600 text-2xl sm:text-3xl">Real Transitions</span>
+            </h2>
+            <p className="mt-6 max-w-2xl mx-auto text-base text-gray-600 sm:text-lg md:mt-8 md:text-xl">
               Meet some of our members who successfully made the leap from tech careers to agriculture.
             </p>
           </div>
@@ -80,12 +94,17 @@ export default function Home() {
       {/* Features section */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">Our Platform</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need to transition to agriculture
-            </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+          <div className="text-center">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Our Platform
+              </span>
+            </div>
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block mb-2">Everything You Need</span>
+              <span className="block text-green-600 text-2xl sm:text-3xl">To Transition to Agriculture</span>
+            </h2>
+            <p className="mt-6 max-w-2xl mx-auto text-base text-gray-600 sm:text-lg md:mt-8 md:text-xl">
               We provide the knowledge, community, and resources to help you make a successful career change.
             </p>
           </div>
@@ -153,28 +172,36 @@ export default function Home() {
       </div>
 
       {/* CTA section */}
-      <div className="bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            <span className="block">Ready to start your journey?</span>
-            <span className="block text-green-600">Join our community today.</span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <Link
-                href="/register"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-              >
-                Get started
-              </Link>
+      <div className="bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="inline-block mb-4">
+              <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Join Us
+              </span>
             </div>
-            <div className="ml-3 inline-flex rounded-md shadow">
-              <Link
-                href="/courses"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-green-600 bg-white hover:bg-green-50"
-              >
-                Learn more
-              </Link>
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block mb-2">Ready to Start Your Journey?</span>
+              <span className="block text-green-600 text-2xl sm:text-3xl">Join Our Community Today</span>
+            </h2>
+
+            <div className="mt-8 flex justify-center flex-wrap gap-4">
+              <div className="inline-flex rounded-md shadow">
+                <Link
+                  href="/register"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                >
+                  Get Started
+                </Link>
+              </div>
+              <div className="inline-flex rounded-md shadow">
+                <Link
+                  href="/courses"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-green-600 bg-white hover:bg-green-50"
+                >
+                  Learn More
+                </Link>
+              </div>
             </div>
           </div>
         </div>
