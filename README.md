@@ -54,13 +54,189 @@ TechToEarth is a platform designed to help tech professionals transition to care
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-## Project Structure
+## App Structure
 
-- `/src/app`: Next.js App Router pages and layouts
-- `/src/components`: Reusable React components
-- `/src/lib`: Utility functions and libraries
-- `/src/models`: MongoDB/Mongoose models
-- `/src/types`: TypeScript type definitions
+TechToEarth follows a client-server architecture with the following components:
+
+- **Frontend**: Next.js with React components
+- **Backend**: Next.js API routes
+- **Database**: MongoDB with Mongoose models
+- **Authentication**: Not yet fully implemented
+- **Styling**: Tailwind CSS for responsive design
+
+### Key Components
+
+1. **Courses**: Educational content for tech-to-agriculture transition
+2. **Events**: Virtual and in-person gatherings for networking
+3. **Groups**: Community spaces for specific agricultural interests
+4. **Resources**: Books, guides, videos, and podcasts
+5. **Success Stories**: Profiles of people who successfully transitioned
+
+### Data Flow
+
+1. Client-side components fetch data from API routes using useEffect and fetch API
+2. API routes connect to MongoDB using Mongoose models
+3. Data is returned as JSON and rendered in React components
+4. Loading states are implemented during data fetching
+5. Error handling is implemented for failed API requests
+
+## Directory Structure
+
+```
+techiefarms/
+├── public/                  # Static assets
+├── scripts/                 # Utility scripts
+│   └── seed-db.js           # Database seeding script
+├── src/
+│   ├── app/                 # Next.js app directory
+│   │   ├── about/           # About page
+│   │   ├── api/             # API routes
+│   │   │   ├── courses/     # Courses API endpoints
+│   │   │   ├── events/      # Events API endpoints
+│   │   │   ├── groups/      # Groups API endpoints
+│   │   │   ├── resources/   # Resources API endpoints
+│   │   │   ├── success-stories/ # Success stories API endpoints
+│   │   │   ├── users/       # Users API endpoints
+│   │   │   └── data.ts      # Data access layer
+│   │   ├── community/       # Community page
+│   │   ├── courses/         # Courses pages
+│   │   ├── events/          # Events pages
+│   │   ├── groups/          # Groups pages
+│   │   ├── profile/         # User profile page
+│   │   ├── resources/       # Resources page
+│   │   ├── layout.tsx       # Root layout
+│   │   └── page.tsx         # Home page
+│   ├── components/          # Reusable React components
+│   │   ├── cards/           # Card components
+│   │   ├── filters/         # Filter components
+│   │   ├── layout/          # Layout components
+│   │   └── ui/              # UI components
+│   ├── data/                # Mock data (being replaced by MongoDB)
+│   ├── lib/                 # Utility functions
+│   │   └── mongodb.ts       # MongoDB connection utility
+│   ├── models/              # Mongoose models
+│   └── X_data/              # Original mock data for reference
+└── tailwind.config.js       # Tailwind CSS configuration
+```
+
+## MongoDB Models
+
+### Course Model
+
+```typescript
+interface ICourse extends Document {
+  id: number;
+  title: string;
+  description: string;
+  level: string;
+  duration: string;
+  instructor: string;
+  price: number;
+  image: string;
+  category: string;
+  topics: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### Event Model
+
+```typescript
+interface IEvent extends Document {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  isVirtual: boolean;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### Group Model
+
+```typescript
+interface IGroup extends Document {
+  id: number;
+  name: string;
+  description: string;
+  memberCount: number;
+  category: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### Resource Model
+
+```typescript
+interface IResource extends Document {
+  id: number;
+  title: string;
+  description: string;
+  type: string;
+  author: string;
+  url: string;
+  image: string;
+  category: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### SuccessStory Model
+
+```typescript
+interface ISuccessStory extends Document {
+  id: number;
+  name: string;
+  formerRole: string;
+  currentRole: string;
+  testimonial: string;
+  transitionYear: string;
+  imageSrc: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### User Model
+
+```typescript
+interface IUser extends Document {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  bio: string;
+  location: string;
+  joinedDate: string;
+  enrolledCourses: number[];
+  savedEvents: number[];
+  joinedGroups: number[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+## API Routes
+
+- `/api/courses` - Get all courses
+- `/api/courses/:id` - Get a specific course
+- `/api/events` - Get all events
+- `/api/events/:id` - Get a specific event
+- `/api/groups` - Get all groups
+- `/api/groups/:id` - Get a specific group
+- `/api/resources` - Get all resources
+- `/api/resources/:id` - Get a specific resource
+- `/api/success-stories` - Get all success stories
+- `/api/success-stories/:id` - Get a specific success story
+- `/api/users/:id` - Get a specific user
 
 ## Contributing
 

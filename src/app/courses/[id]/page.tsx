@@ -121,7 +121,7 @@ export default function CourseDetailsPage() {
               <div className="mt-8 space-y-8">
                 {course.modules.map((module, moduleIndex) => (
                   <div key={moduleIndex} className="border border-gray-200 rounded-lg overflow-hidden">
-                    <div className="bg-gray-50 px-4 py-5 sm:px-6">
+                    <div className="bg-green-50 px-4 py-5 sm:px-6">
                       <h3 className="text-lg font-medium text-gray-900">Module {moduleIndex + 1}: {module.title}</h3>
                     </div>
                     <div className="border-t border-gray-200">
@@ -132,7 +132,7 @@ export default function CourseDetailsPage() {
                           const lessonDuration = typeof lesson === 'string' ? '45-60 min' : lesson.duration;
 
                           return (
-                            <li key={lessonIndex} className="px-4 py-4 sm:px-6">
+                            <li key={lessonIndex} className="px-4 py-4 sm:px-6 bg-white">
                               <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-green-600 truncate">
                                   Lesson {lessonIndex + 1}: {lessonTitle}
