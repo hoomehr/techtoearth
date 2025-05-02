@@ -1,34 +1,104 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiUser, FiBook, FiUsers, FiCalendar, FiSettings, FiHeart, FiBookmark, FiClock, FiMapPin, FiMonitor } from 'react-icons/fi';
-import coursesData from '@/data/courses.json';
-import eventsData from '@/data/events.json';
-import groupsData from '@/data/groups.json';
-import usersData from '@/data/users.json';
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('courses');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [savedEvents, setSavedEvents] = useState([]);
+  const [joinedGroups, setJoinedGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Get the current user (using the first user from our mock data)
-  const currentUser = usersData.users[0];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch current user
+        const userResponse = await fetch('/api/users/1'); // Assuming user ID 1 is the current user
+        const userData = await userResponse.json();
+        setCurrentUser(userData);
 
-  // Get enrolled courses based on user data
-  const enrolledCourses = coursesData.courses.filter(course =>
-    currentUser.enrolledCourses.includes(course.id)
-  );
+        // Fetch all courses, events, and groups
+        const [coursesResponse, eventsResponse, groupsResponse] = await Promise.all([
+          fetch('/api/courses'),
+          fetch('/api/events'),
+          fetch('/api/groups')
+        ]);
 
-  // Get saved events based on user data
-  const savedEvents = eventsData.events.filter(event =>
-    currentUser.savedEvents.includes(event.id)
-  );
+        const coursesData = await coursesResponse.json();
+        const eventsData = await eventsResponse.json();
+        const groupsData = await groupsResponse.json();
 
-  // Get joined groups based on user data
-  const joinedGroups = groupsData.groups.filter(group =>
-    currentUser.joinedGroups.includes(group.id)
-  );
+        // Filter enrolled courses, saved events, and joined groups
+        if (userData) {
+          setEnrolledCourses(
+            coursesData.courses.filter(course =>
+              userData.enrolledCourses && userData.enrolledCourses.includes(course.id)
+            )
+          );
+
+          setSavedEvents(
+            eventsData.events.filter(event =>
+              userData.savedEvents && userData.savedEvents.includes(event.id)
+            )
+          );
+
+          setJoinedGroups(
+            groupsData.groups.filter(group =>
+              userData.joinedGroups && userData.joinedGroups.includes(group.id)
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen py-16" style={{
+        backgroundColor: '#b3dfa1',
+        backgroundImage: 'linear-gradient(315deg, #b3dfa1 0%, #f0e703 74%)'
+      }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-extrabold text-gray-900">Loading Profile...</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if user not found
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen py-16" style={{
+        backgroundColor: '#b3dfa1',
+        backgroundImage: 'linear-gradient(315deg, #b3dfa1 0%, #f0e703 74%)'
+      }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-extrabold text-gray-900">User Not Found</h1>
+            <p className="mt-4 text-xl text-gray-500">We couldn't find your profile information.</p>
+            <div className="mt-10">
+              <Link href="/" className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen" style={{
