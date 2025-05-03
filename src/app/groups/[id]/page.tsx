@@ -4,11 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { use } from 'react';
 import { FiUsers, FiCalendar, FiMessageSquare, FiArrowLeft, FiShare2, FiUserPlus, FiEdit2 } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function GroupDetailPage({ params }: { params: { id: string } }) {
-  const groupId = parseInt(params.id);
+  // In Next.js 15, params should be unwrapped with React.use()
+  const unwrappedParams = use(params);
+  const groupId = parseInt(unwrappedParams.id);
   const [group, setGroup] = useState(null);
   const [relatedGroups, setRelatedGroups] = useState([]);
   const [relatedEvents, setRelatedEvents] = useState([]);

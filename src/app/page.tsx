@@ -127,12 +127,13 @@ export default function Home() {
               <h3 className="text-lg font-medium text-gray-900">Loading success stories...</h3>
             </div>
           ) : (
-            <div className="relative mt-12">
+            <div className="relative mt-12 px-12">
               {/* Slider navigation buttons */}
               <button
                 onClick={() => scroll('left')}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md text-green-600 hover:text-green-800"
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg text-green-600 hover:text-green-800 hover:bg-green-50"
                 aria-label="Scroll left"
+                style={{ marginLeft: '-24px' }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -142,7 +143,7 @@ export default function Home() {
               {/* Slider container */}
               <div
                 ref={sliderRef}
-                className="flex overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+                className="flex overflow-x-auto py-8 px-6 scrollbar-hide snap-x snap-mandatory"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {successStories.map((story) => (
@@ -161,8 +162,9 @@ export default function Home() {
 
               <button
                 onClick={() => scroll('right')}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md text-green-600 hover:text-green-800"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg text-green-600 hover:text-green-800 hover:bg-green-50"
                 aria-label="Scroll right"
+                style={{ marginRight: '-24px' }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
