@@ -36,18 +36,44 @@ export default function CommunityPage() {
   return (
     <div>
       {/* Hero section */}
-      <div className="relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-          <SectionHeader
-            tag="Connect"
-            title="Join Our Community"
-            subtitle="Grow Together With Like-Minded Professionals"
-            description="Connect with like-minded professionals, attend events, and be part of a growing movement of tech experts transitioning to agriculture."
-            actionButton={{
-              text: "View Upcoming Events",
-              href: "#events"
-            }}
-          />
+      <div className="relative mt-10">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden" style={{ boxShadow: '0 0 30px rgba(0, 128, 0, 0.3)' }}>
+            <div className="absolute inset-0">
+              <Image
+                className="h-full w-full object-cover"
+                src="https://placehold.co/1920x1080/f0e703/FFFFFF?text=Community+Hero+Image"
+                alt="Community members collaborating"
+                fill
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00f260] to-[#0575e6] mix-blend-multiply opacity-80" />
+            </div>
+            <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
+              <div className="text-center">
+                <div className="inline-block mb-4">
+                  <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white bg-opacity-20 text-white">
+                    Connect
+                  </span>
+                </div>
+                <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
+                  <span className="block text-white mb-2">Join Our Community</span>
+                  <span className="block text-blue-200 text-3xl sm:text-4xl md:text-5xl">Grow Together With Like-Minded Professionals</span>
+                </h1>
+                <p className="mt-6 max-w-lg mx-auto text-center text-xl text-white sm:max-w-3xl">
+                  Connect with like-minded professionals, attend events, and be part of a growing movement of tech experts transitioning to agriculture.
+                </p>
+                <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
+                  <Link
+                    href="#events"
+                    className="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-green-700 bg-white hover:bg-green-50 sm:px-8"
+                  >
+                    View Upcoming Events
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
