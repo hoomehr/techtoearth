@@ -3,23 +3,48 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiUser, FiBook, FiUsers, FiCalendar, FiSettings, FiHeart, FiBookmark, FiClock, FiMapPin, FiMonitor } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
+import { FiUser, FiBook, FiUsers, FiCalendar, FiSettings, FiHeart, FiBookmark, FiClock, FiMapPin, FiMonitor, FiMail } from 'react-icons/fi';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ProfilePage() {
+  const router = useRouter();
+  const { user, loading: authLoading, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('courses');
-  const [currentUser, setCurrentUser] = useState(null);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [savedEvents, setSavedEvents] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Form state for edit profile
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    bio: '',
+    location: ''
+  });
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     async function fetchData() {
+      if (!user) return;
+
       try {
-        // Fetch current user
-        const userResponse = await fetch('/api/users/1'); // Assuming user ID 1 is the current user
-        const userData = await userResponse.json();
-        setCurrentUser(userData);
+        // Initialize form data with user information
+        setFormData({
+          name: user.name || '',
+          email: user.email || '',
+          bio: user.bio || '',
+          location: user.location || ''
+        });
 
         // Fetch all courses, events, and groups
         const [coursesResponse, eventsResponse, groupsResponse] = await Promise.all([
@@ -33,25 +58,23 @@ export default function ProfilePage() {
         const groupsData = await groupsResponse.json();
 
         // Filter enrolled courses, saved events, and joined groups
-        if (userData) {
-          setEnrolledCourses(
-            coursesData.courses.filter(course =>
-              userData.enrolledCourses && userData.enrolledCourses.includes(course.id)
-            )
-          );
+        setEnrolledCourses(
+          coursesData.courses.filter(course =>
+            user.enrolledCourses && user.enrolledCourses.includes(course.id)
+          )
+        );
 
-          setSavedEvents(
-            eventsData.events.filter(event =>
-              userData.savedEvents && userData.savedEvents.includes(event.id)
-            )
-          );
+        setSavedEvents(
+          eventsData.events.filter(event =>
+            user.savedEvents && user.savedEvents.includes(event.id)
+          )
+        );
 
-          setJoinedGroups(
-            groupsData.groups.filter(group =>
-              userData.joinedGroups && userData.joinedGroups.includes(group.id)
-            )
-          );
-        }
+        setJoinedGroups(
+          groupsData.groups.filter(group =>
+            user.joinedGroups && user.joinedGroups.includes(group.id)
+          )
+        );
       } catch (error) {
         console.error('Error fetching profile data:', error);
       } finally {
@@ -59,11 +82,75 @@ export default function ProfilePage() {
       }
     }
 
-    fetchData();
-  }, []);
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
+
+  // Handle opening the edit profile modal
+  const openEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  // Handle closing the edit profile modal
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Show loading state
+      setIsSubmitting(true);
+
+      // Send the updated profile data to the server
+      const response = await fetch('/api/users/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: user.id,
+          ...formData
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update profile');
+      }
+
+      // Update the user in the auth context
+      updateUser(data.user);
+
+      // Show success message
+      alert('Profile updated successfully!');
+
+      // Close the modal
+      closeEditModal();
+
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert(error.message || 'An error occurred while updating your profile');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Show loading state
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen py-16" style={{
         backgroundColor: '#b3dfa1',
@@ -79,7 +166,7 @@ export default function ProfilePage() {
   }
 
   // Show error state if user not found
-  if (!currentUser) {
+  if (!user) {
     return (
       <div className="min-h-screen py-16" style={{
         backgroundColor: '#b3dfa1',
@@ -87,11 +174,11 @@ export default function ProfilePage() {
       }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl font-extrabold text-gray-900">User Not Found</h1>
-            <p className="mt-4 text-xl text-gray-500">We couldn't find your profile information.</p>
+            <h1 className="text-3xl font-extrabold text-gray-900">Not Logged In</h1>
+            <p className="mt-4 text-xl text-gray-500">Please log in to view your profile.</p>
             <div className="mt-10">
-              <Link href="/" className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
-                Back to Home
+              <Link href="/login" className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
+                Go to Login
               </Link>
             </div>
           </div>
@@ -135,8 +222,8 @@ export default function ProfilePage() {
             <div className="md:flex-shrink-0 mb-4 md:mb-0 md:mr-6">
               <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-green-100">
                 <Image
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
+                  src={user.avatar}
+                  alt={user.name}
                   fill
                   className="object-cover"
                 />
@@ -145,25 +232,27 @@ export default function ProfilePage() {
             <div className="flex-1">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{currentUser.name}</h2>
-                  <div className="h-1 w-16 bg-gradient-to-r from-green-500 to-transparent rounded-full my-2"></div>
-                  <p className="text-gray-600">{currentUser.email}</p>
+                  <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+                  <p className="text-gray-600">{user.email}</p>
                 </div>
                 <div className="mt-2 md:mt-0">
-                  <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
+                  <button
+                    onClick={openEditModal}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                  >
                     <FiSettings className="mr-2" /> Edit Profile
                   </button>
                 </div>
               </div>
               <div className="mb-4">
-                <p className="text-gray-700">{currentUser.bio}</p>
+                <p className="text-gray-700">{user.bio}</p>
               </div>
               <div className="flex flex-wrap text-sm text-gray-600">
                 <div className="mr-6 mb-2">
-                  <span className="font-medium">Location:</span> {currentUser.location}
+                  <span className="font-medium">Location:</span> {user.location}
                 </div>
                 <div className="mr-6 mb-2">
-                  <span className="font-medium">Member since:</span> {currentUser.joinedDate}
+                  <span className="font-medium">Member since:</span> {user.joinedDate}
                 </div>
                 <div className="mr-6 mb-2">
                   <span className="font-medium">Courses:</span> {enrolledCourses.length}
@@ -517,6 +606,165 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          {/* Blurred background */}
+          <div className="fixed inset-0 backdrop-blur-sm"></div>
+
+          <div className="flex items-center justify-center min-h-screen p-4 relative" onClick={closeEditModal}>
+            {/* Modal panel */}
+            <div
+              className="bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all max-w-lg w-full p-6 relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                type="button"
+                className="absolute top-3 right-3 text-gray-400 hover:text-gray-500 focus:outline-none"
+                onClick={closeEditModal}
+              >
+                <span className="sr-only">Close</span>
+                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Header */}
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <FiUser className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                    Edit Profile
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Update your personal information
+                  </p>
+                </div>
+              </div>
+
+              {/* Form */}
+              <div className="mt-5">
+                <form onSubmit={handleSubmit}>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        Full Name
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <FiUser className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                          type="text"
+                          name="name"
+                          id="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          className="pl-10 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email Address
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <FiMail className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          className="pl-10 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+                        Bio
+                      </label>
+                      <div className="mt-1">
+                        <textarea
+                          name="bio"
+                          id="bio"
+                          rows={3}
+                          value={formData.bio}
+                          onChange={handleInputChange}
+                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                          placeholder="Tell us about yourself..."
+                        />
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">Brief description for your profile. URLs are hyperlinked.</p>
+                    </div>
+
+                    <div>
+                      <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                        Location
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <FiMapPin className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                          type="text"
+                          name="location"
+                          id="location"
+                          value={formData.location}
+                          onChange={handleInputChange}
+                          className="pl-10 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                          placeholder="City, State, Country"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 sm:flex sm:flex-row-reverse">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full inline-flex justify-center items-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          Save Changes
+                          <svg xmlns="http://www.w3.org/2000/svg" className="ml-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={closeEditModal}
+                      disabled={isSubmitting}
+                      className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:mt-0 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

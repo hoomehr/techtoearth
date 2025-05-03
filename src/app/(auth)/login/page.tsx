@@ -5,11 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FiMail, FiLock, FiArrowRight, FiUser } from 'react-icons/fi';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AuthPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const registeredParam = searchParams.get('registered');
+  const { login } = useAuth();
 
   // State for active tab (login or signup)
   const [activeTab, setActiveTab] = useState(registeredParam ? 'login' : 'login');
@@ -39,18 +41,11 @@ export default function AuthPage() {
     setLoginError('');
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: loginEmail, password: loginPassword }),
-      });
+      // Use the login function from the auth context
+      const result = await login(loginEmail, loginPassword);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+      if (!result.success) {
+        throw new Error(result.message || 'Login failed');
       }
 
       // Successful login

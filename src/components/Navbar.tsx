@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,8 +22,8 @@ export default function Navbar() {
     { href: '/about', label: 'About' },
   ];
 
-  // For testing the login functionality, we'll set isLoggedIn to false
-  const isLoggedIn = false;
+  // Check if user is logged in
+  const isLoggedIn = !!user;
 
   // Use a single Profile tab for both logged in and logged out states
   const profileLink = isLoggedIn
