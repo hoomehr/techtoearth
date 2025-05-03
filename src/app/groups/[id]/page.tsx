@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { FiUsers, FiCalendar, FiMessageSquare, FiArrowLeft, FiShare2, FiUserPlus } from 'react-icons/fi';
+import { FiUsers, FiCalendar, FiMessageSquare, FiArrowLeft, FiShare2, FiUserPlus, FiEdit2 } from 'react-icons/fi';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function GroupDetailPage({ params }: { params: { id: string } }) {
   const groupId = parseInt(params.id);
@@ -12,6 +13,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
   const [relatedGroups, setRelatedGroups] = useState([]);
   const [relatedEvents, setRelatedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
@@ -124,10 +126,21 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
             <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <div className="inline-block mb-4">
-                <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                  {group.category}
-                </span>
+              <div className="flex justify-between items-start w-full">
+                <div className="inline-block mb-4">
+                  <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    {group.category}
+                  </span>
+                </div>
+                {user?.isAdmin && (
+                  <Link
+                    href={`/admin/edit-group/${group.id}`}
+                    className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"
+                  >
+                    <FiEdit2 className="mr-2 h-4 w-4" />
+                    Edit Group
+                  </Link>
+                )}
               </div>
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl mb-2">
                 {group.name}

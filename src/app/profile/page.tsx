@@ -275,102 +275,105 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Admin Actions */}
-        {user?.isAdmin && (
-          <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg shadow-md p-6 mb-6">
-            <div className="flex items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 mr-4">Admin Actions</h2>
-              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/admin/add-course"
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                Add Course
-              </Link>
-              <Link
-                href="/admin/add-event"
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                Add Event
-              </Link>
-              <Link
-                href="/admin/add-group"
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                Add Group
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Dashboard tabs */}
+        {/* Combined Dashboard Box */}
         <div className="mb-6">
-          <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg shadow-md p-2">
-            <nav className="flex flex-wrap">
-              <button
-                onClick={() => setActiveTab('courses')}
-                className={`${
-                  activeTab === 'courses'
-                    ? 'bg-green-50 text-green-700 border-green-500'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-transparent'
-                } flex items-center px-4 py-3 font-medium text-sm rounded-md m-1 transition-all duration-200 border-l-4`}
-              >
-                <div className={`p-2 rounded-full mr-2 ${activeTab === 'courses' ? 'bg-green-100' : 'bg-gray-100'}`}>
-                  <FiBook className={`${activeTab === 'courses' ? 'text-green-600' : 'text-gray-500'}`} />
+          <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg shadow-md">
+            {/* Combined tabs and admin actions */}
+            <div className="p-5 flex items-center justify-between">
+              <nav className="flex flex-wrap">
+                <button
+                  onClick={() => setActiveTab('courses')}
+                  className={`${
+                    activeTab === 'courses'
+                      ? 'bg-green-50 text-green-700 border-green-300'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-gray-200'
+                  } flex items-center px-4 py-1.5 font-medium text-sm rounded-full m-1 transition-all duration-200 border`}
+                >
+                  <div className={`p-1 rounded-full mr-2 ${activeTab === 'courses' ? 'bg-green-100' : 'bg-gray-100'}`}>
+                    <FiBook className={`h-3.5 w-3.5 ${activeTab === 'courses' ? 'text-green-600' : 'text-gray-500'}`} />
+                  </div>
+                  My Courses
+                </button>
+                <button
+                  onClick={() => setActiveTab('groups')}
+                  className={`${
+                    activeTab === 'groups'
+                      ? 'bg-green-50 text-green-700 border-green-300'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-gray-200'
+                  } flex items-center px-4 py-1.5 font-medium text-sm rounded-full m-1 transition-all duration-200 border`}
+                >
+                  <div className={`p-1 rounded-full mr-2 ${activeTab === 'groups' ? 'bg-green-100' : 'bg-gray-100'}`}>
+                    <FiUsers className={`h-3.5 w-3.5 ${activeTab === 'groups' ? 'text-green-600' : 'text-gray-500'}`} />
+                  </div>
+                  My Groups
+                </button>
+                <button
+                  onClick={() => setActiveTab('events')}
+                  className={`${
+                    activeTab === 'events'
+                      ? 'bg-green-50 text-green-700 border-green-300'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-gray-200'
+                  } flex items-center px-4 py-1.5 font-medium text-sm rounded-full m-1 transition-all duration-200 border`}
+                >
+                  <div className={`p-1 rounded-full mr-2 ${activeTab === 'events' ? 'bg-green-100' : 'bg-gray-100'}`}>
+                    <FiCalendar className={`h-3.5 w-3.5 ${activeTab === 'events' ? 'text-green-600' : 'text-gray-500'}`} />
+                  </div>
+                  My Events
+                </button>
+                <button
+                  onClick={() => setActiveTab('saved')}
+                  className={`${
+                    activeTab === 'saved'
+                      ? 'bg-green-50 text-green-700 border-green-300'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-gray-200'
+                  } flex items-center px-4 py-1.5 font-medium text-sm rounded-full m-1 transition-all duration-200 border`}
+                >
+                  <div className={`p-1 rounded-full mr-2 ${activeTab === 'saved' ? 'bg-green-100' : 'bg-gray-100'}`}>
+                    <FiBookmark className={`h-3.5 w-3.5 ${activeTab === 'saved' ? 'text-green-600' : 'text-gray-500'}`} />
+                  </div>
+                  Saved Items
+                </button>
+              </nav>
+
+              {/* Admin buttons */}
+              {user?.isAdmin && (
+                <div className="flex items-center space-x-2">
+                  <Link
+                    href="/admin/add-course"
+                    className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"
+                  >
+                    <div className="p-1 rounded-full mr-2 bg-green-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    Course
+                  </Link>
+                  <Link
+                    href="/admin/add-event"
+                    className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"
+                  >
+                    <div className="p-1 rounded-full mr-2 bg-green-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    Event
+                  </Link>
+                  <Link
+                    href="/admin/add-group"
+                    className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"
+                  >
+                    <div className="p-1 rounded-full mr-2 bg-green-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    Group
+                  </Link>
                 </div>
-                My Courses
-              </button>
-              <button
-                onClick={() => setActiveTab('groups')}
-                className={`${
-                  activeTab === 'groups'
-                    ? 'bg-green-50 text-green-700 border-green-500'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-transparent'
-                } flex items-center px-4 py-3 font-medium text-sm rounded-md m-1 transition-all duration-200 border-l-4`}
-              >
-                <div className={`p-2 rounded-full mr-2 ${activeTab === 'groups' ? 'bg-green-100' : 'bg-gray-100'}`}>
-                  <FiUsers className={`${activeTab === 'groups' ? 'text-green-600' : 'text-gray-500'}`} />
-                </div>
-                My Groups
-              </button>
-              <button
-                onClick={() => setActiveTab('events')}
-                className={`${
-                  activeTab === 'events'
-                    ? 'bg-green-50 text-green-700 border-green-500'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-transparent'
-                } flex items-center px-4 py-3 font-medium text-sm rounded-md m-1 transition-all duration-200 border-l-4`}
-              >
-                <div className={`p-2 rounded-full mr-2 ${activeTab === 'events' ? 'bg-green-100' : 'bg-gray-100'}`}>
-                  <FiCalendar className={`${activeTab === 'events' ? 'text-green-600' : 'text-gray-500'}`} />
-                </div>
-                My Events
-              </button>
-              <button
-                onClick={() => setActiveTab('saved')}
-                className={`${
-                  activeTab === 'saved'
-                    ? 'bg-green-50 text-green-700 border-green-500'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-transparent'
-                } flex items-center px-4 py-3 font-medium text-sm rounded-md m-1 transition-all duration-200 border-l-4`}
-              >
-                <div className={`p-2 rounded-full mr-2 ${activeTab === 'saved' ? 'bg-green-100' : 'bg-gray-100'}`}>
-                  <FiBookmark className={`${activeTab === 'saved' ? 'text-green-600' : 'text-gray-500'}`} />
-                </div>
-                Saved Items
-              </button>
-            </nav>
+              )}
+            </div>
           </div>
         </div>
 
@@ -439,13 +442,24 @@ export default function ProfilePage() {
                           </div>
                           <span className="text-xs text-gray-500 whitespace-nowrap">In Progress</span>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-between items-center">
                           <Link
                             href={`/courses/${course.id}`}
                             className="text-sm font-medium text-green-600 hover:text-green-500"
                           >
                             Continue Learning →
                           </Link>
+                          {user?.isAdmin && (
+                            <Link
+                              href={`/admin/edit-course/${course.id}`}
+                              className="inline-flex items-center px-2 py-1 border border-green-300 rounded-full text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                              </svg>
+                              Edit
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -521,9 +535,22 @@ export default function ProfilePage() {
                             >
                               View Group →
                             </Link>
-                            <button className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
-                              Leave Group
-                            </button>
+                            <div className="flex space-x-2">
+                              {user?.isAdmin && (
+                                <Link
+                                  href={`/admin/edit-group/${group.id}`}
+                                  className="inline-flex items-center px-2 py-1 border border-green-300 rounded-full text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                  </svg>
+                                  Edit
+                                </Link>
+                              )}
+                              <button className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50">
+                                Leave Group
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>

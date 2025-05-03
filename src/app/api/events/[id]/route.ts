@@ -5,8 +5,12 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  // In Next.js 15, we need to await params before accessing its properties
+  const paramsData = await params;
+  const id = paramsData.id;
+
   try {
-    const eventId = parseInt(params.id);
+    const eventId = parseInt(id);
     const event = await getEvent(eventId);
 
     if (!event) {
