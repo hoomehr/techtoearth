@@ -2,16 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import SuccessStoryCard from "@/components/cards/SuccessStoryCard";
+import { useState, useEffect, useRef } from "react";
+import SuccessStoryCard, { SuccessStoryProps } from "@/components/cards/SuccessStoryCard";
 import SectionHeader from "@/components/SectionHeader";
-
-
 
 export default function Home() {
   const [courses, setCourses] = useState([]);
-  const [successStories, setSuccessStories] = useState([]);
+  const [successStories, setSuccessStories] = useState<SuccessStoryProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll the slider
+  const scroll = (direction: 'left' | 'right') => {
+    if (sliderRef.current) {
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const scrollTo = direction === 'left'
+        ? scrollLeft - clientWidth / 2
+        : scrollLeft + clientWidth / 2;
+
+      sliderRef.current.scrollTo({
+        left: scrollTo,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -24,7 +38,7 @@ export default function Home() {
         // Fetch success stories
         const storiesResponse = await fetch('/api/success-stories');
         const storiesData = await storiesResponse.json();
-        setSuccessStories(storiesData.successStories.slice(0, 3));
+        setSuccessStories(storiesData.successStories);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -113,18 +127,47 @@ export default function Home() {
               <h3 className="text-lg font-medium text-gray-900">Loading success stories...</h3>
             </div>
           ) : (
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              {successStories.map((story) => (
-                <SuccessStoryCard
-                  key={story.id}
-                  name={story.name}
-                  formerRole={story.formerRole}
-                  currentRole={story.currentRole}
-                  testimonial={story.testimonial}
-                  transitionYear={story.transitionYear}
-                  imageSrc={story.imageSrc}
-                />
-              ))}
+            <div className="relative mt-12">
+              {/* Slider navigation buttons */}
+              <button
+                onClick={() => scroll('left')}
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md text-green-600 hover:text-green-800"
+                aria-label="Scroll left"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Slider container */}
+              <div
+                ref={sliderRef}
+                className="flex overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {successStories.map((story) => (
+                  <div key={story.id} className="flex-none w-full sm:w-1/2 md:w-1/3 px-4 snap-start">
+                    <SuccessStoryCard
+                      name={story.name}
+                      formerRole={story.formerRole}
+                      currentRole={story.currentRole}
+                      testimonial={story.testimonial}
+                      transitionYear={story.transitionYear}
+                      imageSrc={story.imageSrc}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => scroll('right')}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md text-green-600 hover:text-green-800"
+                aria-label="Scroll right"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           )}
         </div>
