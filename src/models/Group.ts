@@ -7,6 +7,9 @@ export interface IGroup extends Document {
   memberCount: number;
   category: string;
   image: string;
+  meetingFrequency?: string;
+  isPrivate: boolean;
+  topics: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +22,9 @@ const GroupSchema: Schema = new Schema(
     memberCount: { type: Number, default: 0 },
     category: { type: String, required: true },
     image: { type: String, required: true },
+    meetingFrequency: { type: String },
+    isPrivate: { type: Boolean, default: false },
+    topics: [{ type: String }],
   },
   { timestamps: true }
 );

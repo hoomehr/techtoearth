@@ -233,7 +233,17 @@ export default function ProfilePage() {
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
-                  <p className="text-gray-600">{user.email}</p>
+                  <div className="flex items-center">
+                    <p className="text-gray-600">{user.email}</p>
+                    {user?.isAdmin && (
+                      <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                        <svg className="mr-1 h-2 w-2 text-red-500" fill="currentColor" viewBox="0 0 8 8">
+                          <circle cx="4" cy="4" r="3" />
+                        </svg>
+                        Admin
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="mt-2 md:mt-0">
                   <button
@@ -264,6 +274,45 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+
+        {/* Admin Actions */}
+        {user?.isAdmin && (
+          <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg shadow-md p-6 mb-6">
+            <div className="flex items-center mb-4">
+              <h2 className="text-xl font-bold text-gray-900 mr-4">Admin Actions</h2>
+              <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/admin/add-course"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                Add Course
+              </Link>
+              <Link
+                href="/admin/add-event"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                Add Event
+              </Link>
+              <Link
+                href="/admin/add-group"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                Add Group
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Dashboard tabs */}
         <div className="mb-6">

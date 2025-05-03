@@ -7,6 +7,7 @@ export interface IUser extends Document {
   avatar: string;
   bio: string;
   location: string;
+  isAdmin?: boolean;
   joinedDate: string;
   enrolledCourses: number[];
   savedEvents: number[];
@@ -25,6 +26,7 @@ const UserSchema: Schema = new Schema(
     avatar: { type: String, required: true },
     bio: { type: String, default: 'No bio provided' },
     location: { type: String, default: 'Not specified' },
+    isAdmin: { type: Boolean, default: false },
     joinedDate: { type: String, required: true },
     enrolledCourses: [{ type: Number }],
     savedEvents: [{ type: Number }],

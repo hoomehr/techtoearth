@@ -9,6 +9,9 @@ export interface IEvent extends Document {
   location: string;
   isVirtual: boolean;
   image: string;
+  category: string;
+  organizer: string;
+  maxAttendees?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,6 +26,9 @@ const EventSchema: Schema = new Schema(
     location: { type: String, required: true },
     isVirtual: { type: Boolean, default: false },
     image: { type: String, required: true },
+    category: { type: String, required: true },
+    organizer: { type: String, required: true },
+    maxAttendees: { type: Number },
   },
   { timestamps: true }
 );
