@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 export default function AddGroupPage() {
   const router = useRouter();
@@ -166,18 +167,47 @@ export default function AddGroupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                    Image URL *
-                  </label>
-                  <input
-                    type="url"
-                    name="image"
-                    id="image"
-                    required
-                    value={formData.image}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                    placeholder="https://example.com/image.jpg"
+                  <ImageUpload
+                    initialImageUrl={formData.image}
+                    onImageChange={(url, file) => {
+                      if (file) {
+                        // If a file was uploaded, handle the upload
+                        const handleFileUpload = async () => {
+                          const formData = new FormData();
+                          formData.append('file', file);
+
+                          try {
+                            const response = await fetch('/api/upload', {
+                              method: 'POST',
+                              body: formData
+                            });
+
+                            if (!response.ok) {
+                              throw new Error('Failed to upload image');
+                            }
+
+                            const data = await response.json();
+                            setFormData(prev => ({
+                              ...prev,
+                              image: data.url
+                            }));
+                          } catch (error) {
+                            console.error('Error uploading image:', error);
+                            alert('Failed to upload image. Please try again.');
+                          }
+                        };
+
+                        handleFileUpload();
+                      } else {
+                        // If just a URL was provided
+                        setFormData(prev => ({
+                          ...prev,
+                          image: url
+                        }));
+                      }
+                    }}
+                    label="Group Image"
+                    required={true}
                   />
                 </div>
               </div>

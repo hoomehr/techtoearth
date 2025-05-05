@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 export default function EditGroupPage() {
   const params = useParams();
@@ -39,7 +40,7 @@ export default function EditGroupPage() {
         }
         const data = await response.json();
         setGroup(data);
-        
+
         // Initialize form data with group data
         setFormData({
           name: data.name || '',
@@ -219,32 +220,92 @@ export default function EditGroupPage() {
               </div>
 
               <div>
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                  Group Image URL
-                </label>
-                <input
-                  type="url"
-                  name="image"
-                  id="image"
-                  value={formData.image}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  required
+                <ImageUpload
+                  initialImageUrl={formData.image}
+                  onImageChange={(url, file) => {
+                    if (file) {
+                      // If a file was uploaded, handle the upload
+                      const handleFileUpload = async () => {
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        try {
+                          const response = await fetch('/api/upload', {
+                            method: 'POST',
+                            body: formData
+                          });
+
+                          if (!response.ok) {
+                            throw new Error('Failed to upload image');
+                          }
+
+                          const data = await response.json();
+                          setFormData(prev => ({
+                            ...prev,
+                            image: data.url
+                          }));
+                        } catch (error) {
+                          console.error('Error uploading image:', error);
+                          alert('Failed to upload image. Please try again.');
+                        }
+                      };
+
+                      handleFileUpload();
+                    } else {
+                      // If just a URL was provided
+                      setFormData(prev => ({
+                        ...prev,
+                        image: url
+                      }));
+                    }
+                  }}
+                  label="Group Image"
+                  required={true}
                 />
               </div>
 
               <div>
-                <label htmlFor="bannerImage" className="block text-sm font-medium text-gray-700">
-                  Banner Image URL
-                </label>
-                <input
-                  type="url"
-                  name="bannerImage"
-                  id="bannerImage"
-                  value={formData.bannerImage}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  required
+                <ImageUpload
+                  initialImageUrl={formData.bannerImage}
+                  onImageChange={(url, file) => {
+                    if (file) {
+                      // If a file was uploaded, handle the upload
+                      const handleFileUpload = async () => {
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        try {
+                          const response = await fetch('/api/upload', {
+                            method: 'POST',
+                            body: formData
+                          });
+
+                          if (!response.ok) {
+                            throw new Error('Failed to upload image');
+                          }
+
+                          const data = await response.json();
+                          setFormData(prev => ({
+                            ...prev,
+                            bannerImage: data.url
+                          }));
+                        } catch (error) {
+                          console.error('Error uploading banner image:', error);
+                          alert('Failed to upload banner image. Please try again.');
+                        }
+                      };
+
+                      handleFileUpload();
+                    } else {
+                      // If just a URL was provided
+                      setFormData(prev => ({
+                        ...prev,
+                        bannerImage: url
+                      }));
+                    }
+                  }}
+                  label="Banner Image"
+                  required={true}
                 />
               </div>
             </div>
