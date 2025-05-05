@@ -24,8 +24,8 @@ export default function AddEventPage() {
     maxAttendees: ''
   });
 
-  // Redirect if not admin
-  if (!loading && (!user || !user.isAdmin)) {
+  // Redirect if not admin or creator
+  if (!loading && (!user || (!user.isAdmin && !user.isCreator))) {
     router.push('/profile');
     return null;
   }
@@ -46,7 +46,8 @@ export default function AddEventPage() {
       // Convert maxAttendees to number if it's not empty
       const dataToSubmit = {
         ...formData,
-        maxAttendees: formData.maxAttendees ? parseInt(formData.maxAttendees) : undefined
+        maxAttendees: formData.maxAttendees ? parseInt(formData.maxAttendees) : undefined,
+        creatorId: user?.id // Add the creator ID
       };
 
       const response = await fetch('/api/events', {

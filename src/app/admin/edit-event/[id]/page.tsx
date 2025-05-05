@@ -26,8 +26,8 @@ export default function EditEventPage() {
   });
 
   useEffect(() => {
-    // Redirect if not admin
-    if (user && !user.isAdmin) {
+    // Redirect if not admin and not the creator of this event
+    if (user && !user.isAdmin && event && event.creatorId !== user.id) {
       router.push('/events/' + eventId);
       return;
     }
@@ -110,13 +110,14 @@ export default function EditEventPage() {
     );
   }
 
-  if (!user?.isAdmin) {
+  if (user && !user.isAdmin && (!event || event.creatorId !== user.id)) {
     return (
       <div className="min-h-screen py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl font-extrabold text-gray-900">Access Denied</h1>
-            <p className="mt-4 text-xl text-gray-500">You don't have permission to edit events.</p>
+            <p className="mt-4 text-xl text-gray-500">You don't have permission to edit this event.</p>
+            <p className="mt-2 text-gray-500">Only admins and the creator of this event can edit it.</p>
             <div className="mt-10">
               <Link href={`/events/${eventId}`} className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
                 Back to Event

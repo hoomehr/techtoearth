@@ -21,6 +21,7 @@ export interface ICourse extends Document {
     content: string;
   }[];
   category: string;
+  creatorId?: number; // ID of the user who created the course
   createdAt: Date;
   updatedAt: Date;
 }
@@ -50,7 +51,8 @@ const CourseSchema: Schema = new Schema(
       }
     ],
     lessons: [LessonSchema],
-    category: { type: String, required: true }
+    category: { type: String, required: true },
+    creatorId: { type: Number }
   },
   { timestamps: true }
 );

@@ -16,6 +16,7 @@ interface User {
   joinedGroups: number[];
   savedResources: number[];
   isAdmin?: boolean;
+  isCreator?: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -243,6 +243,14 @@ export default function ProfilePage() {
                         Admin
                       </span>
                     )}
+                    {user?.isCreator && (
+                      <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                        <svg className="mr-1 h-2 w-2 text-blue-500" fill="currentColor" viewBox="0 0 8 8">
+                          <circle cx="4" cy="4" r="3" />
+                        </svg>
+                        Creator
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="mt-2 md:mt-0">
@@ -335,8 +343,8 @@ export default function ProfilePage() {
                 </button>
               </nav>
 
-              {/* Admin buttons */}
-              {user?.isAdmin && (
+              {/* Admin or Creator buttons */}
+              {(user?.isAdmin || user?.isCreator) && (
                 <div className="flex items-center space-x-2">
                   <Link
                     href="/admin/add-course"
@@ -449,7 +457,7 @@ export default function ProfilePage() {
                           >
                             Continue Learning →
                           </Link>
-                          {user?.isAdmin && (
+                          {(user?.isAdmin || (user?.isCreator && course.creatorId === user.id)) && (
                             <Link
                               href={`/admin/edit-course/${course.id}`}
                               className="inline-flex items-center px-2 py-1 border border-green-300 rounded-full text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100"
@@ -536,7 +544,7 @@ export default function ProfilePage() {
                               View Group →
                             </Link>
                             <div className="flex space-x-2">
-                              {user?.isAdmin && (
+                              {(user?.isAdmin || (user?.isCreator && group.creatorId === user.id)) && (
                                 <Link
                                   href={`/admin/edit-group/${group.id}`}
                                   className="inline-flex items-center px-2 py-1 border border-green-300 rounded-full text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100"

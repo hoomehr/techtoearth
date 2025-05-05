@@ -26,8 +26,8 @@ export default function AddCoursePage() {
     lessons: [{ title: '', duration: '', content: '' }]
   });
 
-  // Redirect if not admin
-  if (!loading && (!user || !user.isAdmin)) {
+  // Redirect if not admin or creator
+  if (!loading && (!user || (!user.isAdmin && !user.isCreator))) {
     router.push('/profile');
     return null;
   }
@@ -181,7 +181,8 @@ export default function AddCoursePage() {
       const dataToSubmit = {
         ...formData,
         topics: filteredTopics,
-        modules: filteredModules
+        modules: filteredModules,
+        creatorId: user?.id // Add the creator ID
       };
 
       const response = await fetch('/api/courses', {

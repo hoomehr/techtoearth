@@ -64,6 +64,16 @@ TechToEarth follows a client-server architecture with the following components:
 - **Authentication**: Not yet fully implemented
 - **Styling**: Tailwind CSS for responsive design
 
+### User Roles
+
+The application has three types of users:
+
+1. **Regular Users**: Can browse courses, events, groups, and resources. They can enroll in courses, save events, and join groups.
+
+2. **Creators**: Can create and edit their own courses, events, and groups. They cannot edit content created by other users. Creators have a "Creator" badge displayed on their profile.
+
+3. **Administrators**: Have full access to all features. They can create, edit, and delete any content in the system. Administrators have an "Admin" badge displayed on their profile.
+
 ### Key Components
 
 1. **Courses**: Educational content for tech-to-agriculture transition
@@ -128,13 +138,24 @@ interface ICourse extends Document {
   id: number;
   title: string;
   description: string;
-  level: string;
+  longDescription?: string;
+  level: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
   instructor: string;
   price: number;
   image: string;
   category: string;
   topics: string[];
+  modules?: {
+    title: string;
+    lessons: string[];
+  }[];
+  lessons?: {
+    title: string;
+    duration: string;
+    content: string;
+  }[];
+  creatorId?: number; // ID of the user who created the course
   createdAt: Date;
   updatedAt: Date;
 }
@@ -152,6 +173,10 @@ interface IEvent extends Document {
   location: string;
   isVirtual: boolean;
   image: string;
+  category: string;
+  organizer: string;
+  maxAttendees?: number;
+  creatorId?: number; // ID of the user who created the event
   createdAt: Date;
   updatedAt: Date;
 }
@@ -167,6 +192,10 @@ interface IGroup extends Document {
   memberCount: number;
   category: string;
   image: string;
+  meetingFrequency?: string;
+  isPrivate: boolean;
+  topics: string[];
+  creatorId?: number; // ID of the user who created the group
   createdAt: Date;
   updatedAt: Date;
 }
@@ -215,10 +244,14 @@ interface IUser extends Document {
   avatar: string;
   bio: string;
   location: string;
+  isAdmin?: boolean;
+  isCreator?: boolean;
   joinedDate: string;
   enrolledCourses: number[];
   savedEvents: number[];
   joinedGroups: number[];
+  savedResources: number[];
+  password?: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -22,8 +22,8 @@ export default function AddGroupPage() {
     topics: ['']
   });
 
-  // Redirect if not admin
-  if (!loading && (!user || !user.isAdmin)) {
+  // Redirect if not admin or creator
+  if (!loading && (!user || (!user.isAdmin && !user.isCreator))) {
     router.push('/profile');
     return null;
   }
@@ -76,7 +76,8 @@ export default function AddGroupPage() {
       const dataToSubmit = {
         ...formData,
         topics: filteredTopics,
-        memberCount: memberCount
+        memberCount: memberCount,
+        creatorId: user?.id // Add the creator ID
       };
 
       const response = await fetch('/api/groups', {

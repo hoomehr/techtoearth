@@ -10,6 +10,7 @@ export interface IGroup extends Document {
   meetingFrequency?: string;
   isPrivate: boolean;
   topics: string[];
+  creatorId?: number; // ID of the user who created the group
   createdAt: Date;
   updatedAt: Date;
 }
@@ -25,6 +26,7 @@ const GroupSchema: Schema = new Schema(
     meetingFrequency: { type: String },
     isPrivate: { type: Boolean, default: false },
     topics: [{ type: String }],
+    creatorId: { type: Number },
   },
   { timestamps: true }
 );

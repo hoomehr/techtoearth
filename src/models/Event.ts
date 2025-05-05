@@ -12,6 +12,7 @@ export interface IEvent extends Document {
   category: string;
   organizer: string;
   maxAttendees?: number;
+  creatorId?: number; // ID of the user who created the event
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +30,7 @@ const EventSchema: Schema = new Schema(
     category: { type: String, required: true },
     organizer: { type: String, required: true },
     maxAttendees: { type: Number },
+    creatorId: { type: Number },
   },
   { timestamps: true }
 );
