@@ -1,18 +1,42 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { FiLogOut, FiUser } from 'react-icons/fi';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const dropdownRef = useRef(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const handleSignOut = () => {
+    logout();
+    setIsDropdownOpen(false);
+    router.push('/');
+  };
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -57,15 +81,42 @@ export default function Navbar() {
             </div>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link
-              href={profileLink.href}
-              className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
-              {profileLink.label}
-            </Link>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200"
+              >
+                <FiUser className="h-5 w-5 mr-2" />
+                {profileLink.label}
+              </button>
+
+              {/* Dropdown menu */}
+              {isLoggedIn && isDropdownOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                  onMouseLeave={() => setIsDropdownOpen(false)}
+                >
+                  <div className="py-1">
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      <FiUser className="inline mr-2" />
+                      My Dashboard
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <FiLogOut className="inline mr-2" />
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button
@@ -135,11 +186,19 @@ export default function Navbar() {
                 href={profileLink.href}
                 className="flex items-center pl-3 pr-4 py-2 border-l-4 border-green-500 text-base font-medium text-green-700 bg-green-50"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
+                <FiUser className="h-5 w-5 mr-2" />
                 {profileLink.label}
               </Link>
+
+              {isLoggedIn && (
+                <button
+                  onClick={handleSignOut}
+                  className="flex w-full items-center pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                >
+                  <FiLogOut className="h-5 w-5 mr-2" />
+                  Sign Out
+                </button>
+              )}
             </div>
           </div>
         </div>
