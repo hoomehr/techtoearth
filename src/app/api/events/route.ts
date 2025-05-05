@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       const event = await Event.create({
         ...data,
         id: newId,
+        creatorId: data.creatorId, // Ensure creatorId is set
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
       const event = await Event.create({
         ...data,
         id: newId,
+        creatorId: data.creatorId, // Ensure creatorId is set
         createdAt: new Date(),
         updatedAt: new Date()
       });

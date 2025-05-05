@@ -651,12 +651,25 @@ export default function ProfilePage() {
                         </div>
 
                         <div className="flex justify-between items-center">
-                          <Link
-                            href={`/events/${event.id}`}
-                            className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
-                          >
-                            View Details
-                          </Link>
+                          <div className="flex space-x-2">
+                            <Link
+                              href={`/events/${event.id}`}
+                              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                            >
+                              View Details
+                            </Link>
+                            {(user?.isAdmin || (user?.isCreator && event.creatorId === user.id)) && (
+                              <Link
+                                href={`/admin/edit-event/${event.id}`}
+                                className="inline-flex items-center px-2 py-1 border border-green-300 rounded-full text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                                Edit
+                              </Link>
+                            )}
+                          </div>
                           <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                             Cancel RSVP
                           </button>

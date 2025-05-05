@@ -60,6 +60,11 @@ export async function PUT(
       course[key] = data[key];
     });
 
+    // Preserve the creatorId
+    if (course.creatorId) {
+      course.creatorId = course.creatorId;
+    }
+
     // Update the updatedAt timestamp
     course.updatedAt = new Date();
 
