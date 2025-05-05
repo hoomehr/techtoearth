@@ -1,0 +1,52 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "name": "AgTech Innovators",
+      "description": "A community of tech professionals exploring and developing innovative solutions for agriculture. We discuss IoT, AI, robotics, and other technologies that can revolutionize farming.",
+      "memberCount": 1245,
+      "category": "Technology",
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=AgTech+Innovators"
+    },
+    {
+      "id": 2,
+      "name": "Urban Farming Enthusiasts",
+      "description": "For those interested in applying technology to urban farming solutions. We focus on vertical farming, hydroponics, aquaponics, and small-scale agriculture in urban environments.",
+      "memberCount": 876,
+      "category": "Urban Agriculture",
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Urban+Farming"
+    },
+    {
+      "id": 3,
+      "name": "Sustainable Food Systems",
+      "description": "Discussing the intersection of technology and sustainable food production. Topics include supply chain optimization, food waste reduction, and sustainable farming practices.",
+      "memberCount": 1032,
+      "category": "Sustainability",
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Sustainable+Food"
+    },
+    {
+      "id": 4,
+      "name": "From Code to Crops",
+      "description": "A support group for software developers and IT professionals who are transitioning to careers in agriculture. Share experiences, advice, and opportunities.",
+      "memberCount": 543,
+      "category": "Career Transition",
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Code+to+Crops"
+    },
+    {
+      "id": 5,
+      "name": "Agricultural Data Science",
+      "description": "Focused on applying data science, machine learning, and analytics to agricultural challenges. We work on projects related to crop prediction, resource optimization, and more.",
+      "memberCount": 789,
+      "category": "Data Science",
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Ag+Data+Science"
+    },
+    {
+      "id": 6,
+      "name": "Farm-to-Table Tech",
+      "description": "Exploring technologies that connect farmers directly with consumers. We discuss e-commerce platforms, logistics optimization, and direct marketing strategies for small farms.",
+      "memberCount": 654,
+      "category": "Food Distribution",
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Farm+to+Table"
+    }
+  ]
+}

@@ -90,7 +90,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 {event.isVirtual ? 'Virtual Event' : 'In-Person Event'}
               </span>
             </div>
-            {user?.isAdmin && (
+            {(user?.isAdmin || (user?.isCreator && event.creatorId === user.id)) && (
               <Link
                 href={`/admin/edit-event/${event.id}`}
                 className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"

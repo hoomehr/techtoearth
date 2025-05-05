@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "avatar": "https://placehold.co/400x400/4B7F52/FFFFFF?text=JS",
+      "bio": "Former software engineer transitioning to sustainable agriculture. Passionate about permaculture and regenerative farming practices.",
+      "location": "Portland, OR",
+      "joinedDate": "January 2023",
+      "enrolledCourses": [1, 3, 5],
+      "savedEvents": [2, 3, 5, 6],
+      "joinedGroups": [1, 4],
+      "savedResources": [3, 7, 9]
+    },
+    {
+      "id": 2,
+      "name": "Alex Johnson",
+      "email": "alex.johnson@example.com",
+      "avatar": "https://placehold.co/400x400/4B7F52/FFFFFF?text=AJ",
+      "bio": "Tech startup founder exploring opportunities in AgTech. Looking to combine my experience in AI and machine learning with sustainable farming.",
+      "location": "Austin, TX",
+      "joinedDate": "March 2023",
+      "enrolledCourses": [2, 4],
+      "savedEvents": [1, 4],
+      "joinedGroups": [2, 5],
+      "savedResources": [1, 5, 8]
+    },
+    {
+      "id": 3,
+      "name": "Maria Rodriguez",
+      "email": "maria.rodriguez@example.com",
+      "avatar": "https://placehold.co/400x400/4B7F52/FFFFFF?text=MR",
+      "bio": "UX designer with a passion for food systems. Currently learning about vineyard management and wine production while working remotely.",
+      "location": "Sonoma, CA",
+      "joinedDate": "November 2022",
+      "enrolledCourses": [4, 6],
+      "savedEvents": [2, 5],
+      "joinedGroups": [3, 6],
+      "savedResources": [2, 4, 10]
+    }
+  ]
+}

@@ -135,7 +135,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
                     {group.category}
                   </span>
                 </div>
-                {user?.isAdmin && (
+                {(user?.isAdmin || (user?.isCreator && group.creatorId === user.id)) && (
                   <Link
                     href={`/admin/edit-group/${group.id}`}
                     className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"

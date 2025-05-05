@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { use } from 'react';
 import RelatedCoursesSection from '@/components/cards/RelatedCoursesSection';
 import EnrollCourseCard from '@/components/cards/EnrollCourseCard';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,7 +12,9 @@ import { FiEdit2 } from 'react-icons/fi';
 
 export default function CourseDetailsPage() {
   const params = useParams();
-  const courseId = parseInt(params.id as string);
+  // In Next.js 15, params should be unwrapped with React.use()
+  const unwrappedParams = use(params);
+  const courseId = parseInt(unwrappedParams.id);
   const [course, setCourse] = useState(null);
   const [allCourses, setAllCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +103,7 @@ export default function CourseDetailsPage() {
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
               ${course.price}
             </span>
-            {user?.isAdmin && (
+            {(user?.isAdmin || (user?.isCreator && course.creatorId === user.id)) && (
               <Link
                 href={`/admin/edit-course/${course.id}`}
                 className="inline-flex items-center px-4 py-1.5 border border-green-300 rounded-full text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors"

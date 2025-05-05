@@ -1,0 +1,64 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Introduction to Sustainable Farming Webinar",
+      "description": "Learn the basics of sustainable farming practices and how to apply your tech skills to modern agriculture in this interactive webinar.",
+      "date": "June 15, 2023",
+      "time": "7:00 PM - 8:30 PM EST",
+      "location": "Zoom",
+      "isVirtual": true,
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Sustainable+Farming+Webinar"
+    },
+    {
+      "id": 2,
+      "title": "Tech in Agriculture Networking Mixer",
+      "description": "Connect with other tech professionals interested in agriculture at this in-person networking event. Refreshments will be provided.",
+      "date": "June 22, 2023",
+      "time": "6:30 PM - 9:00 PM",
+      "location": "Green Space Innovation Hub, San Francisco",
+      "isVirtual": false,
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Networking+Mixer"
+    },
+    {
+      "id": 3,
+      "title": "Hydroponics Workshop for Beginners",
+      "description": "A hands-on workshop where you'll learn how to set up your own hydroponic growing system using affordable materials and technology.",
+      "date": "July 8, 2023",
+      "time": "10:00 AM - 2:00 PM",
+      "location": "Urban Farming Center, Portland",
+      "isVirtual": false,
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Hydroponics+Workshop"
+    },
+    {
+      "id": 4,
+      "title": "AgTech Startup Showcase",
+      "description": "Watch presentations from innovative AgTech startups and learn about the latest technologies being developed for the agriculture industry.",
+      "date": "July 15, 2023",
+      "time": "1:00 PM - 4:00 PM EST",
+      "location": "Virtual Conference Platform",
+      "isVirtual": true,
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=AgTech+Startup+Showcase"
+    },
+    {
+      "id": 5,
+      "title": "Farm Visit: Tech Integration in Action",
+      "description": "Tour a working farm that has successfully integrated various technologies to improve efficiency, sustainability, and productivity.",
+      "date": "July 29, 2023",
+      "time": "9:00 AM - 12:00 PM",
+      "location": "TechFarm Innovations, Austin Area",
+      "isVirtual": false,
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Farm+Visit"
+    },
+    {
+      "id": 6,
+      "title": "Data Analytics for Farm Management",
+      "description": "Learn how to apply data analytics skills to farm management, including crop yield prediction, resource optimization, and decision support systems.",
+      "date": "August 5, 2023",
+      "time": "6:00 PM - 7:30 PM EST",
+      "location": "Zoom",
+      "isVirtual": true,
+      "image": "https://placehold.co/800x600/4B7F52/FFFFFF?text=Data+Analytics+Workshop"
+    }
+  ]
+}
