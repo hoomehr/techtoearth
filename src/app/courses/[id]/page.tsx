@@ -120,48 +120,73 @@ export default function CourseDetailsPage() {
           <div className="lg:col-span-2">
             <div className="prose prose-green prose-lg max-w-none">
               <h2>About This Course</h2>
-              <p>{course.longDescription}</p>
+              <p>{course.longDescription || course.description}</p>
 
               <h2 className="mt-12">What You'll Learn</h2>
               <ul>
-                {course.topics.map((topic, index) => (
-                  <li key={index}>{topic}</li>
-                ))}
+                {course.topics && course.topics.length > 0 ? (
+                  course.topics.map((topic, index) => (
+                    <li key={index}>{topic}</li>
+                  ))
+                ) : (
+                  <li>Course topics will be added soon</li>
+                )}
               </ul>
 
               <h2 className="mt-12">Course Content</h2>
               <div className="mt-8 space-y-8">
-                {course.modules.map((module, moduleIndex) => (
+                {course.modules && course.modules.length > 0 ? (
+                  course.modules.map((module, moduleIndex) => (
                   <div key={moduleIndex} className="border border-gray-200 rounded-lg overflow-hidden">
                     <div className="bg-green-50 px-4 py-5 sm:px-6">
                       <h3 className="text-lg font-medium text-gray-900">Module {moduleIndex + 1}: {module.title}</h3>
                     </div>
                     <div className="border-t border-gray-200">
                       <ul className="divide-y divide-gray-200">
-                        {module.lessons.map((lesson, lessonIndex) => {
-                          // Handle both string lessons and object lessons with title/duration
-                          const lessonTitle = typeof lesson === 'string' ? lesson : lesson.title;
-                          const lessonDuration = typeof lesson === 'string' ? '45-60 min' : lesson.duration;
+                        {module.lessons && module.lessons.length > 0 ? (
+                          module.lessons.map((lesson, lessonIndex) => {
+                            // Handle both string lessons and object lessons with title/duration
+                            const lessonTitle = typeof lesson === 'string' ? lesson : (lesson?.title || `Lesson ${lessonIndex + 1}`);
+                            const lessonDuration = typeof lesson === 'string' ? '45-60 min' : (lesson?.duration || '45-60 min');
 
-                          return (
-                            <li key={lessonIndex} className="px-4 py-4 sm:px-6 bg-white">
-                              <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-green-600 truncate">
-                                  Lesson {lessonIndex + 1}: {lessonTitle}
-                                </p>
-                                <div className="ml-2 flex-shrink-0 flex">
-                                  <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    {lessonDuration}
+                            return (
+                              <li key={lessonIndex} className="px-4 py-4 sm:px-6 bg-white">
+                                <div className="flex items-center justify-between">
+                                  <p className="text-sm font-medium text-green-600 truncate">
+                                    Lesson {lessonIndex + 1}: {lessonTitle}
                                   </p>
+                                  <div className="ml-2 flex-shrink-0 flex">
+                                    <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                      {lessonDuration}
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                          );
-                        })}
+                              </li>
+                            );
+                          })
+                        ) : (
+                          <li className="px-4 py-4 sm:px-6 bg-white">
+                            <p className="text-sm text-gray-600">
+                              Lessons will be added to this module soon.
+                            </p>
+                          </li>
+                        )}
                       </ul>
                     </div>
                   </div>
-                ))}
+                ))
+                ) : (
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="bg-green-50 px-4 py-5 sm:px-6">
+                      <h3 className="text-lg font-medium text-gray-900">Course modules will be added soon</h3>
+                    </div>
+                    <div className="border-t border-gray-200 px-4 py-4 sm:px-6 bg-white">
+                      <p className="text-sm text-gray-600">
+                        The instructor is currently preparing the course content. Check back soon!
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -172,9 +197,9 @@ export default function CourseDetailsPage() {
               <EnrollCourseCard
                 price={course.price}
                 instructor={{
-                  name: course.instructor,
-                  expertise: [course.topics[0], course.topics[1]],
-                  initials: course.instructor.split(' ').map(name => name[0]).join('')
+                  name: course.instructor || 'Instructor',
+                  expertise: [course.topics?.[0] || 'Agriculture', course.topics?.[1] || 'Farming'],
+                  initials: course.instructor ? course.instructor.split(' ').map(name => name[0]).join('') : 'I'
                 }}
               />
             </div>
@@ -186,7 +211,7 @@ export default function CourseDetailsPage() {
       <RelatedCoursesSection
         currentCourseId={course.id}
         courses={allCourses}
-        level={course.level}
+        level={course.level || 'Beginner'}
       />
     </div>
   );

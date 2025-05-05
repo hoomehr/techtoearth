@@ -21,9 +21,11 @@ export default function RelatedCoursesSection({
   level,
 }: RelatedCoursesSectionProps) {
   // Filter courses by level and exclude the current course
-  const relatedCourses = courses
-    .filter(c => c.id !== currentCourseId && c.level === level)
-    .slice(0, 3);
+  const relatedCourses = Array.isArray(courses)
+    ? courses
+        .filter(c => c && c.id !== currentCourseId && c.level === level)
+        .slice(0, 3)
+    : [];
 
   if (relatedCourses.length === 0) {
     return null;

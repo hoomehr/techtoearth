@@ -14,10 +14,15 @@ export default function AddCoursePage() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    longDescription: '',
     level: 'Beginner',
     duration: '',
     image: '',
     category: '',
+    instructor: '',
+    price: 0,
+    topics: [''],
+    modules: [{ title: '', lessons: [''] }],
     lessons: [{ title: '', duration: '', content: '' }]
   });
 
@@ -63,17 +68,128 @@ export default function AddCoursePage() {
     }));
   };
 
+  const handleTopicChange = (index, value) => {
+    const updatedTopics = [...formData.topics];
+    updatedTopics[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      topics: updatedTopics
+    }));
+  };
+
+  const addTopic = () => {
+    setFormData(prev => ({
+      ...prev,
+      topics: [...prev.topics, '']
+    }));
+  };
+
+  const removeTopic = (index) => {
+    const updatedTopics = [...formData.topics];
+    updatedTopics.splice(index, 1);
+    setFormData(prev => ({
+      ...prev,
+      topics: updatedTopics
+    }));
+  };
+
+  const handleModuleChange = (index, field, value) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[index] = {
+      ...updatedModules[index],
+      [field]: value
+    };
+    setFormData(prev => ({
+      ...prev,
+      modules: updatedModules
+    }));
+  };
+
+  const handleModuleLessonChange = (moduleIndex, lessonIndex, value) => {
+    const updatedModules = [...formData.modules];
+    const updatedLessons = [...updatedModules[moduleIndex].lessons];
+    updatedLessons[lessonIndex] = value;
+    updatedModules[moduleIndex] = {
+      ...updatedModules[moduleIndex],
+      lessons: updatedLessons
+    };
+    setFormData(prev => ({
+      ...prev,
+      modules: updatedModules
+    }));
+  };
+
+  const addModule = () => {
+    setFormData(prev => ({
+      ...prev,
+      modules: [...prev.modules, { title: '', lessons: [''] }]
+    }));
+  };
+
+  const removeModule = (index) => {
+    const updatedModules = [...formData.modules];
+    updatedModules.splice(index, 1);
+    setFormData(prev => ({
+      ...prev,
+      modules: updatedModules
+    }));
+  };
+
+  const addModuleLesson = (moduleIndex) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[moduleIndex] = {
+      ...updatedModules[moduleIndex],
+      lessons: [...updatedModules[moduleIndex].lessons, '']
+    };
+    setFormData(prev => ({
+      ...prev,
+      modules: updatedModules
+    }));
+  };
+
+  const removeModuleLesson = (moduleIndex, lessonIndex) => {
+    const updatedModules = [...formData.modules];
+    const updatedLessons = [...updatedModules[moduleIndex].lessons];
+    updatedLessons.splice(lessonIndex, 1);
+    updatedModules[moduleIndex] = {
+      ...updatedModules[moduleIndex],
+      lessons: updatedLessons
+    };
+    setFormData(prev => ({
+      ...prev,
+      modules: updatedModules
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      // Filter out empty topics
+      const filteredTopics = formData.topics.filter(topic => topic.trim() !== '');
+
+      // Filter out empty module lessons and empty modules
+      const filteredModules = formData.modules
+        .map(module => ({
+          ...module,
+          lessons: module.lessons.filter(lesson => lesson.trim() !== '')
+        }))
+        .filter(module => module.title.trim() !== '' && module.lessons.length > 0);
+
+      // Prepare data for submission
+      const dataToSubmit = {
+        ...formData,
+        topics: filteredTopics,
+        modules: filteredModules
+      };
+
       const response = await fetch('/api/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSubmit),
       });
 
       if (!response.ok) {
@@ -85,7 +201,7 @@ export default function AddCoursePage() {
       router.push('/courses');
     } catch (error) {
       console.error('Error creating course:', error);
-      alert(error.message || 'An error occurred while creating the course');
+      alert(error instanceof Error ? error.message : 'An error occurred while creating the course');
     } finally {
       setIsSubmitting(false);
     }
@@ -209,7 +325,7 @@ export default function AddCoursePage() {
 
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                  Description *
+                  Short Description *
                 </label>
                 <textarea
                   id="description"
@@ -219,6 +335,23 @@ export default function AddCoursePage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  placeholder="A brief description of the course (displayed in course cards)"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="longDescription" className="block text-sm font-medium text-gray-700">
+                  Long Description *
+                </label>
+                <textarea
+                  id="longDescription"
+                  name="longDescription"
+                  rows={5}
+                  required
+                  value={formData.longDescription}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  placeholder="A detailed description of the course (displayed on the course details page)"
                 />
               </div>
 
@@ -274,9 +407,167 @@ export default function AddCoursePage() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="instructor" className="block text-sm font-medium text-gray-700">
+                    Instructor Name *
+                  </label>
+                  <input
+                    type="text"
+                    name="instructor"
+                    id="instructor"
+                    required
+                    value={formData.instructor}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    placeholder="e.g. John Smith"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+                    Price (USD) *
+                  </label>
+                  <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    required
+                    min="0"
+                    step="0.01"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    placeholder="e.g. 49.99"
+                  />
+                </div>
+              </div>
+
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Lessons</h3>
+                  <h3 className="text-lg font-medium text-gray-900">Topics</h3>
+                  <button
+                    type="button"
+                    onClick={addTopic}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                  >
+                    Add Topic
+                  </button>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  {formData.topics.map((topic, index) => (
+                    <div key={index} className="flex items-center">
+                      <input
+                        type="text"
+                        value={topic}
+                        onChange={(e) => handleTopicChange(index, e.target.value)}
+                        className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        placeholder="e.g. Sustainable Practices"
+                      />
+                      {formData.topics.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeTopic(index)}
+                          className="ml-2 text-red-600 hover:text-red-800"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">Modules</h3>
+                  <button
+                    type="button"
+                    onClick={addModule}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                  >
+                    Add Module
+                  </button>
+                </div>
+
+                <div className="space-y-6 mb-8">
+                  {formData.modules.map((module, moduleIndex) => (
+                    <div key={moduleIndex} className="border border-gray-200 rounded-md p-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="text-md font-medium text-gray-900">Module {moduleIndex + 1}</h4>
+                        {formData.modules.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeModule(moduleIndex)}
+                            className="text-red-600 hover:text-red-800 text-sm"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <label htmlFor={`module-title-${moduleIndex}`} className="block text-sm font-medium text-gray-700">
+                          Module Title *
+                        </label>
+                        <input
+                          type="text"
+                          id={`module-title-${moduleIndex}`}
+                          required
+                          value={module.title}
+                          onChange={(e) => handleModuleChange(moduleIndex, 'title', e.target.value)}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="block text-sm font-medium text-gray-700">Module Lessons</label>
+                          <button
+                            type="button"
+                            onClick={() => addModuleLesson(moduleIndex)}
+                            className="text-xs text-green-600 hover:text-green-700"
+                          >
+                            + Add Lesson
+                          </button>
+                        </div>
+
+                        <div className="space-y-2">
+                          {module.lessons.map((lesson, lessonIndex) => (
+                            <div key={lessonIndex} className="flex items-center">
+                              <input
+                                type="text"
+                                value={lesson}
+                                onChange={(e) => handleModuleLessonChange(moduleIndex, lessonIndex, e.target.value)}
+                                className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                placeholder={`Lesson ${lessonIndex + 1}`}
+                              />
+                              {module.lessons.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => removeModuleLesson(moduleIndex, lessonIndex)}
+                                  className="ml-2 text-red-600 hover:text-red-800"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">Detailed Lessons</h3>
                   <button
                     type="button"
                     onClick={addLesson}

@@ -65,14 +65,20 @@ export default function AddGroupPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Filter out empty topics
-    const filteredTopics = formData.topics.filter(topic => topic.trim() !== '');
-    const dataToSubmit = {
-      ...formData,
-      topics: filteredTopics
-    };
-
     try {
+      // Filter out empty topics
+      const filteredTopics = formData.topics.filter(topic => topic.trim() !== '');
+
+      // Ensure memberCount is a number
+      const memberCount = parseInt(formData.memberCount.toString()) || 0;
+
+      // Prepare data for submission
+      const dataToSubmit = {
+        ...formData,
+        topics: filteredTopics,
+        memberCount: memberCount
+      };
+
       const response = await fetch('/api/groups', {
         method: 'POST',
         headers: {
@@ -90,7 +96,7 @@ export default function AddGroupPage() {
       router.push('/community');
     } catch (error) {
       console.error('Error creating group:', error);
-      alert(error.message || 'An error occurred while creating the group');
+      alert(error instanceof Error ? error.message : 'An error occurred while creating the group');
     } finally {
       setIsSubmitting(false);
     }

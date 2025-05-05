@@ -43,12 +43,18 @@ export default function AddEventPage() {
     setIsSubmitting(true);
 
     try {
+      // Convert maxAttendees to number if it's not empty
+      const dataToSubmit = {
+        ...formData,
+        maxAttendees: formData.maxAttendees ? parseInt(formData.maxAttendees) : undefined
+      };
+
       const response = await fetch('/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSubmit),
       });
 
       if (!response.ok) {
@@ -60,7 +66,7 @@ export default function AddEventPage() {
       router.push('/community');
     } catch (error) {
       console.error('Error creating event:', error);
-      alert(error.message || 'An error occurred while creating the event');
+      alert(error instanceof Error ? error.message : 'An error occurred while creating the event');
     } finally {
       setIsSubmitting(false);
     }
