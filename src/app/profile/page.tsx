@@ -11,9 +11,9 @@ export default function ProfilePage() {
   const router = useRouter();
   const { user, loading: authLoading, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('courses');
-  const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const [savedEvents, setSavedEvents] = useState([]);
-  const [joinedGroups, setJoinedGroups] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
+  const [registeredEvents, setRegisteredEvents] = useState<any[]>([]);
+  const [joinedGroups, setJoinedGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,9 +64,10 @@ export default function ProfilePage() {
           )
         );
 
-        setSavedEvents(
+        setRegisteredEvents(
           eventsData.events.filter(event =>
-            user.savedEvents && user.savedEvents.includes(event.id)
+            // Check if the user is registered for this event (in attendees array)
+            event.attendees && event.attendees.includes(user.id)
           )
         );
 
@@ -98,7 +99,7 @@ export default function ProfilePage() {
   };
 
   // Handle form input changes
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -107,7 +108,7 @@ export default function ProfilePage() {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -141,7 +142,7 @@ export default function ProfilePage() {
       // Close the modal
       closeEditModal();
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating profile:', error);
       alert(error.message || 'An error occurred while updating your profile');
     } finally {
@@ -555,9 +556,12 @@ export default function ProfilePage() {
                                   Edit
                                 </Link>
                               )}
-                              <button className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50">
-                                Leave Group
-                              </button>
+                              <Link
+                                href={`/groups/${group.id}`}
+                                className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
+                              >
+                                View Group
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -575,7 +579,7 @@ export default function ProfilePage() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
                   <div className="flex items-center mb-2">
-                    <h2 className="text-xl font-bold text-gray-900 mr-4">My Upcoming Events</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mr-4">My Registered Events</h2>
                     <div className="flex-grow h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full"></div>
                   </div>
                 </div>
@@ -587,11 +591,11 @@ export default function ProfilePage() {
                 </Link>
               </div>
 
-              {savedEvents.length === 0 ? (
+              {registeredEvents.length === 0 ? (
                 <div className="text-center py-8">
                   <FiCalendar className="mx-auto h-12 w-12 text-gray-400" />
                   <h3 className="mt-2 text-sm font-medium text-gray-900">No events yet</h3>
-                  <p className="mt-1 text-sm text-gray-500">RSVP to events to see them here.</p>
+                  <p className="mt-1 text-sm text-gray-500">Register for events to see them here.</p>
                   <div className="mt-6">
                     <Link
                       href="/community"
@@ -603,7 +607,7 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {savedEvents.map((event) => (
+                  {registeredEvents.map((event) => (
                     <div key={event.id} className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                       {/* Full width image at the top */}
                       <div className="relative h-48 md:h-56 w-full">
@@ -670,9 +674,12 @@ export default function ProfilePage() {
                               </Link>
                             )}
                           </div>
-                          <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            Cancel RSVP
-                          </button>
+                          <Link
+                            href={`/events/${event.id}`}
+                            className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                          >
+                            View Details
+                          </Link>
                         </div>
                       </div>
                     </div>
