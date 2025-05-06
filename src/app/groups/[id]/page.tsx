@@ -2,14 +2,15 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { FiUsers, FiCalendar, FiMessageSquare, FiArrowLeft, FiShare2, FiUserPlus, FiEdit2 } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function GroupDetailPage({ params }: { params: { id: string } }) {
+export default function GroupDetailPage() {
+  const params = useParams();
   // Access the id directly from params
-  const groupId = parseInt(params.id);
+  const groupId = parseInt(params.id as string);
   const [group, setGroup] = useState(null);
   const [relatedGroups, setRelatedGroups] = useState([]);
   const [relatedEvents, setRelatedEvents] = useState([]);
