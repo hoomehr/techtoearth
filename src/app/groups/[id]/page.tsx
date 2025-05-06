@@ -94,15 +94,17 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to join group');
       }
 
       setIsMember(true);
-      // Update the group data
-      const updatedGroup = await response.json();
-      setGroup(updatedGroup.group);
+      // Update the group data with the returned group object
+      if (data.group) {
+        setGroup(data.group);
+      }
     } catch (error) {
       console.error('Error joining group:', error);
       alert(error.message || 'Failed to join group');
@@ -129,15 +131,17 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to leave group');
       }
 
       setIsMember(false);
-      // Update the group data
-      const updatedGroup = await response.json();
-      setGroup(updatedGroup.group);
+      // Update the group data with the returned group object
+      if (data.group) {
+        setGroup(data.group);
+      }
     } catch (error) {
       console.error('Error leaving group:', error);
       alert(error.message || 'Failed to leave group');

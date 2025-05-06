@@ -96,15 +96,17 @@ export default function CourseDetailsPage() {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to enroll in course');
       }
 
       setIsEnrolled(true);
-      // Update the course data
-      const updatedCourse = await response.json();
-      setCourse(updatedCourse.course);
+      // Update the course data with the returned course object
+      if (data.course) {
+        setCourse(data.course);
+      }
     } catch (error) {
       console.error('Error enrolling in course:', error);
       alert(error.message || 'Failed to enroll in course');
@@ -131,15 +133,17 @@ export default function CourseDetailsPage() {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to unenroll from course');
       }
 
       setIsEnrolled(false);
-      // Update the course data
-      const updatedCourse = await response.json();
-      setCourse(updatedCourse.course);
+      // Update the course data with the returned course object
+      if (data.course) {
+        setCourse(data.course);
+      }
     } catch (error) {
       console.error('Error unenrolling from course:', error);
       alert(error.message || 'Failed to unenroll from course');

@@ -84,15 +84,17 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to register for event');
       }
 
       setIsRegistered(true);
-      // Update the event data
-      const updatedEvent = await response.json();
-      setEvent(updatedEvent.event);
+      // Update the event data with the returned event object
+      if (data.event) {
+        setEvent(data.event);
+      }
     } catch (error) {
       console.error('Error registering for event:', error);
       alert(error.message || 'Failed to register for event');
@@ -119,15 +121,17 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to unregister from event');
       }
 
       setIsRegistered(false);
-      // Update the event data
-      const updatedEvent = await response.json();
-      setEvent(updatedEvent.event);
+      // Update the event data with the returned event object
+      if (data.event) {
+        setEvent(data.event);
+      }
     } catch (error) {
       console.error('Error unregistering from event:', error);
       alert(error.message || 'Failed to unregister from event');
