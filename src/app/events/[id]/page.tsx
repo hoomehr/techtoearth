@@ -4,14 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { use } from 'react';
 import { FiCalendar, FiClock, FiMapPin, FiMonitor, FiUsers, FiArrowLeft, FiShare2, FiEdit2 } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
-  // In Next.js 15, params should be unwrapped with React.use()
-  const unwrappedParams = use(params);
-  const eventId = parseInt(unwrappedParams.id);
+  // Access the id directly from params
+  const eventId = parseInt(params.id);
   const [event, setEvent] = useState(null);
   const [relatedEvents, setRelatedEvents] = useState([]);
   const [loading, setLoading] = useState(true);

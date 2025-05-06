@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { use } from 'react';
 import RelatedCoursesSection from '@/components/cards/RelatedCoursesSection';
 import EnrollCourseCard from '@/components/cards/EnrollCourseCard';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,9 +11,8 @@ import { FiEdit2 } from 'react-icons/fi';
 
 export default function CourseDetailsPage() {
   const params = useParams();
-  // In Next.js 15, params should be unwrapped with React.use()
-  const unwrappedParams = use(params);
-  const courseId = parseInt(unwrappedParams.id);
+  // In client components, we should access the id directly from params
+  const courseId = parseInt(params.id as string);
   const [course, setCourse] = useState(null);
   const [allCourses, setAllCourses] = useState([]);
   const [loading, setLoading] = useState(true);

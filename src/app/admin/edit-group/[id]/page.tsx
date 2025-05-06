@@ -6,12 +6,11 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
 import ImageUpload from '@/components/ui/ImageUpload';
-import { use } from 'react';
 
 export default function EditGroupPage() {
   const params = useParams();
-  const unwrappedParams = use(params);
-  const groupId = parseInt(unwrappedParams.id);
+  // Access the id directly from params
+  const groupId = parseInt(params.id as string);
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
