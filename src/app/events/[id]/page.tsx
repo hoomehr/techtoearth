@@ -74,18 +74,33 @@ export default function EventDetailPage() {
 
     setRegistering(true);
     try {
+      console.log('Registering for event:', event.id, 'User:', user.id);
+
+      // First, check if the user and event exist in the database
+      const checkUserResponse = await fetch(`/api/users/${user.id}`);
+      if (!checkUserResponse.ok) {
+        throw new Error('User not found in the database. Please log out and log in again.');
+      }
+
+      const checkEventResponse = await fetch(`/api/events/${event.id}`);
+      if (!checkEventResponse.ok) {
+        throw new Error('Event not found in the database.');
+      }
+
+      // Now proceed with registration
       const response = await fetch('/api/events/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          eventId: event.id,
-          userId: user.id
+          eventId: parseInt(event.id),
+          userId: parseInt(user.id)
         }),
       });
 
       const data = await response.json();
+      console.log('Registration response:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to register for event');
@@ -95,6 +110,13 @@ export default function EventDetailPage() {
       // Update the event data with the returned event object
       if (data.event) {
         setEvent(data.event);
+      } else {
+        // Refresh the event data if the returned data doesn't include the event
+        const refreshResponse = await fetch(`/api/events/${event.id}`);
+        if (refreshResponse.ok) {
+          const refreshData = await refreshResponse.json();
+          setEvent(refreshData);
+        }
       }
     } catch (error) {
       console.error('Error registering for event:', error);
@@ -111,18 +133,21 @@ export default function EventDetailPage() {
 
     setRegistering(true);
     try {
+      console.log('Unregistering from event:', event.id, 'User:', user.id);
+
       const response = await fetch('/api/events/register', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          eventId: event.id,
-          userId: user.id
+          eventId: parseInt(event.id),
+          userId: parseInt(user.id)
         }),
       });
 
       const data = await response.json();
+      console.log('Unregistration response:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to unregister from event');
@@ -132,6 +157,13 @@ export default function EventDetailPage() {
       // Update the event data with the returned event object
       if (data.event) {
         setEvent(data.event);
+      } else {
+        // Refresh the event data if the returned data doesn't include the event
+        const refreshResponse = await fetch(`/api/events/${event.id}`);
+        if (refreshResponse.ok) {
+          const refreshData = await refreshResponse.json();
+          setEvent(refreshData);
+        }
       }
     } catch (error) {
       console.error('Error unregistering from event:', error);

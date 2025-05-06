@@ -6,9 +6,12 @@ import User from '@/models/User';
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { eventId, userId } = await request.json();
+    const body = await request.json();
+    console.log('Request body:', body);
+    const { eventId, userId } = body;
 
     if (!eventId || !userId) {
+      console.log('Missing eventId or userId:', { eventId, userId });
       return NextResponse.json(
         { error: 'Event ID and User ID are required' },
         { status: 400 }
@@ -16,7 +19,9 @@ export async function POST(request: Request) {
     }
 
     // Find the event
+    console.log('Looking for event with id:', eventId);
     const event = await Event.findOne({ id: eventId });
+    console.log('Event found:', event ? 'Yes' : 'No');
     if (!event) {
       return NextResponse.json(
         { error: 'Event not found' },
@@ -25,7 +30,9 @@ export async function POST(request: Request) {
     }
 
     // Find the user
+    console.log('Looking for user with id:', userId);
     const user = await User.findOne({ id: userId });
+    console.log('User found:', user ? 'Yes' : 'No');
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },

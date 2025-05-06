@@ -10,10 +10,10 @@ export interface IUser extends Document {
   isAdmin?: boolean;
   isCreator?: boolean;
   joinedDate: string;
-  enrolledCourses: number[];
-  savedEvents: number[];
-  joinedGroups: number[];
-  savedResources: number[];
+  enrolledCourses?: number[];
+  savedEvents?: number[];
+  joinedGroups?: number[];
+  savedResources?: number[];
   password?: string; // Optional for authentication
   createdAt: Date;
   updatedAt: Date;
