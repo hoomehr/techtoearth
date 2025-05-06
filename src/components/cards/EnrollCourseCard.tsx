@@ -5,9 +5,22 @@ export interface EnrollCourseCardProps {
     expertise: string[];
     initials: string;
   };
+  isEnrolled?: boolean;
+  enrolling?: boolean;
+  onEnroll?: () => void;
+  onUnenroll?: () => void;
+  enrollmentCount?: number;
 }
 
-export default function EnrollCourseCard({ price, instructor }: EnrollCourseCardProps) {
+export default function EnrollCourseCard({
+  price,
+  instructor,
+  isEnrolled = false,
+  enrolling = false,
+  onEnroll,
+  onUnenroll,
+  enrollmentCount = 0
+}: EnrollCourseCardProps) {
   return (
     <div className="space-y-6">
       {/* Enrollment Card */}
@@ -29,20 +42,38 @@ export default function EnrollCourseCard({ price, instructor }: EnrollCourseCard
                 <div className="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
                   <div className="text-3xl font-bold text-gray-900">${price}</div>
                 </div>
+                <div className="mt-2 text-sm text-gray-600">
+                  <span className="font-medium">{enrollmentCount}</span> students enrolled
+                </div>
               </div>
             </div>
-            <button
-              type="button"
-              className="mt-5 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 transform hover:scale-105"
-            >
-              Enroll Now
-            </button>
-            <button
-              type="button"
-              className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              Add to Wishlist
-            </button>
+            {isEnrolled ? (
+              <button
+                type="button"
+                onClick={onUnenroll}
+                disabled={enrolling}
+                className="mt-5 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 disabled:opacity-50"
+              >
+                {enrolling ? 'Processing...' : 'Unenroll from Course'}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onEnroll}
+                disabled={enrolling}
+                className="mt-5 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+              >
+                {enrolling ? 'Processing...' : 'Enroll Now (Free)'}
+              </button>
+            )}
+            {!isEnrolled && (
+              <button
+                type="button"
+                className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Add to Wishlist
+              </button>
+            )}
           </div>
         </div>
         <div className="px-4 py-5 bg-gray-50 sm:p-6">

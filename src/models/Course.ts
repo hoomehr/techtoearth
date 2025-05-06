@@ -22,6 +22,8 @@ export interface ICourse extends Document {
   }[];
   category: string;
   creatorId?: number; // ID of the user who created the course
+  enrolledStudents?: number[]; // IDs of users enrolled in the course
+  enrollmentCount?: number; // Number of enrolled students
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,7 +54,9 @@ const CourseSchema: Schema = new Schema(
     ],
     lessons: [LessonSchema],
     category: { type: String, required: true },
-    creatorId: { type: Number }
+    creatorId: { type: Number },
+    enrolledStudents: [{ type: Number }], // IDs of users enrolled in the course
+    enrollmentCount: { type: Number, default: 0 } // Number of enrolled students
   },
   { timestamps: true }
 );

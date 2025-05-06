@@ -16,6 +16,8 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
   const [relatedGroups, setRelatedGroups] = useState([]);
   const [relatedEvents, setRelatedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [joining, setJoining] = useState(false);
+  const [isMember, setIsMember] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -28,6 +30,11 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
         }
         const data = await response.json();
         setGroup(data);
+
+        // Check if user is a member of this group
+        if (user && data.members) {
+          setIsMember(data.members.includes(user.id));
+        }
 
         // Fetch all groups for related groups section
         const allGroupsResponse = await fetch('/api/groups');
@@ -50,7 +57,7 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
     }
 
     fetchData();
-  }, [groupId]);
+  }, [groupId, user]);
 
   // Show loading state
   if (loading) {
@@ -69,6 +76,77 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
   if (!group) {
     notFound();
   }
+
+  const handleJoin = async () => {
+    if (!user) {
+      alert('Please sign in to join this group');
+      return;
+    }
+
+    setJoining(true);
+    try {
+      const response = await fetch('/api/groups/join', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          groupId: group.id,
+          userId: user.id
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to join group');
+      }
+
+      setIsMember(true);
+      // Update the group data
+      const updatedGroup = await response.json();
+      setGroup(updatedGroup.group);
+    } catch (error) {
+      console.error('Error joining group:', error);
+      alert(error.message || 'Failed to join group');
+    } finally {
+      setJoining(false);
+    }
+  };
+
+  const handleLeave = async () => {
+    if (!user) {
+      return;
+    }
+
+    setJoining(true);
+    try {
+      const response = await fetch('/api/groups/join', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          groupId: group.id,
+          userId: user.id
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to leave group');
+      }
+
+      setIsMember(false);
+      // Update the group data
+      const updatedGroup = await response.json();
+      setGroup(updatedGroup.group);
+    } catch (error) {
+      console.error('Error leaving group:', error);
+      alert(error.message || 'Failed to leave group');
+    } finally {
+      setJoining(false);
+    }
+  };
 
   // Generate random discussion topics
   const discussionTopics = [
@@ -157,9 +235,24 @@ export default function GroupDetailPage({ params }: { params: { id: string } }) 
           {/* Group details */}
           <div className="p-8">
             <div className="flex flex-wrap gap-4 mb-8">
-              <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
-                <FiUserPlus className="mr-2" /> Join Group
-              </button>
+              {isMember ? (
+                <button
+                  onClick={handleLeave}
+                  disabled={joining}
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+                >
+                  {joining ? 'Processing...' : 'Leave Group'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleJoin}
+                  disabled={joining}
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                >
+                  <FiUserPlus className={joining ? 'hidden' : 'mr-2'} />
+                  {joining ? 'Processing...' : 'Join Group'}
+                </button>
+              )}
               <button className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                 <FiShare2 className="mr-2" /> Share Group
               </button>

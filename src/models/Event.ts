@@ -13,6 +13,8 @@ export interface IEvent extends Document {
   organizer: string;
   maxAttendees?: number;
   creatorId?: number; // ID of the user who created the event
+  attendees?: number[]; // IDs of users registered for the event
+  attendeeCount?: number; // Number of registered attendees
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +33,8 @@ const EventSchema: Schema = new Schema(
     organizer: { type: String, required: true },
     maxAttendees: { type: Number },
     creatorId: { type: Number },
+    attendees: [{ type: Number }], // IDs of users registered for the event
+    attendeeCount: { type: Number, default: 0 }, // Number of registered attendees
   },
   { timestamps: true }
 );

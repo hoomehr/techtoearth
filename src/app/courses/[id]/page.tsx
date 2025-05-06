@@ -18,6 +18,8 @@ export default function CourseDetailsPage() {
   const [course, setCourse] = useState(null);
   const [allCourses, setAllCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [enrolling, setEnrolling] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -27,6 +29,11 @@ export default function CourseDetailsPage() {
         const response = await fetch(`/api/courses/${courseId}`);
         const data = await response.json();
         setCourse(data);
+
+        // Check if user is enrolled in this course
+        if (user && data.enrolledStudents) {
+          setIsEnrolled(data.enrolledStudents.includes(user.id));
+        }
 
         // Fetch all courses for related courses section
         const allCoursesResponse = await fetch('/api/courses');
@@ -40,7 +47,7 @@ export default function CourseDetailsPage() {
     }
 
     fetchCourse();
-  }, [courseId]);
+  }, [courseId, user]);
 
   if (loading) {
     return (
@@ -71,6 +78,77 @@ export default function CourseDetailsPage() {
       </div>
     );
   }
+
+  const handleEnroll = async () => {
+    if (!user) {
+      alert('Please sign in to enroll in this course');
+      return;
+    }
+
+    setEnrolling(true);
+    try {
+      const response = await fetch('/api/courses/enroll', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          courseId: course.id,
+          userId: user.id
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to enroll in course');
+      }
+
+      setIsEnrolled(true);
+      // Update the course data
+      const updatedCourse = await response.json();
+      setCourse(updatedCourse.course);
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+      alert(error.message || 'Failed to enroll in course');
+    } finally {
+      setEnrolling(false);
+    }
+  };
+
+  const handleUnenroll = async () => {
+    if (!user) {
+      return;
+    }
+
+    setEnrolling(true);
+    try {
+      const response = await fetch('/api/courses/enroll', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          courseId: course.id,
+          userId: user.id
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to unenroll from course');
+      }
+
+      setIsEnrolled(false);
+      // Update the course data
+      const updatedCourse = await response.json();
+      setCourse(updatedCourse.course);
+    } catch (error) {
+      console.error('Error unenrolling from course:', error);
+      alert(error.message || 'Failed to unenroll from course');
+    } finally {
+      setEnrolling(false);
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -204,6 +282,11 @@ export default function CourseDetailsPage() {
                   expertise: [course.topics?.[0] || 'Agriculture', course.topics?.[1] || 'Farming'],
                   initials: course.instructor ? course.instructor.split(' ').map(name => name[0]).join('') : 'I'
                 }}
+                isEnrolled={isEnrolled}
+                enrolling={enrolling}
+                onEnroll={handleEnroll}
+                onUnenroll={handleUnenroll}
+                enrollmentCount={course.enrollmentCount || 0}
               />
             </div>
           </div>

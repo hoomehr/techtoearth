@@ -11,6 +11,7 @@ export interface IGroup extends Document {
   isPrivate: boolean;
   topics: string[];
   creatorId?: number; // ID of the user who created the group
+  members?: number[]; // IDs of users who joined the group
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,6 +28,7 @@ const GroupSchema: Schema = new Schema(
     isPrivate: { type: Boolean, default: false },
     topics: [{ type: String }],
     creatorId: { type: Number },
+    members: [{ type: Number }], // IDs of users who joined the group
   },
   { timestamps: true }
 );

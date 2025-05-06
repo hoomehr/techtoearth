@@ -15,6 +15,8 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   const [event, setEvent] = useState(null);
   const [relatedEvents, setRelatedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [registering, setRegistering] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -28,6 +30,11 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
         const data = await response.json();
         setEvent(data);
 
+        // Check if user is registered for this event
+        if (user && data.attendees) {
+          setIsRegistered(data.attendees.includes(user.id));
+        }
+
         // Fetch all events for related events section
         const allEventsResponse = await fetch('/api/events');
         const allEventsData = await allEventsResponse.json();
@@ -40,7 +47,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
     }
 
     fetchEvent();
-  }, [eventId]);
+  }, [eventId, user]);
 
   // Show loading state
   if (loading) {
@@ -59,6 +66,77 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   if (!event) {
     notFound();
   }
+
+  const handleRegister = async () => {
+    if (!user) {
+      alert('Please sign in to register for this event');
+      return;
+    }
+
+    setRegistering(true);
+    try {
+      const response = await fetch('/api/events/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          eventId: event.id,
+          userId: user.id
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to register for event');
+      }
+
+      setIsRegistered(true);
+      // Update the event data
+      const updatedEvent = await response.json();
+      setEvent(updatedEvent.event);
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      alert(error.message || 'Failed to register for event');
+    } finally {
+      setRegistering(false);
+    }
+  };
+
+  const handleUnregister = async () => {
+    if (!user) {
+      return;
+    }
+
+    setRegistering(true);
+    try {
+      const response = await fetch('/api/events/register', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          eventId: event.id,
+          userId: user.id
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to unregister from event');
+      }
+
+      setIsRegistered(false);
+      // Update the event data
+      const updatedEvent = await response.json();
+      setEvent(updatedEvent.event);
+    } catch (error) {
+      console.error('Error unregistering from event:', error);
+      alert(error.message || 'Failed to unregister from event');
+    } finally {
+      setRegistering(false);
+    }
+  };
 
   return (
     <div className="min-h-screen" style={{
@@ -168,7 +246,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Attendees</p>
-                  <p className="font-medium">42 registered</p>
+                  <p className="font-medium">{event.attendeeCount || 0} registered</p>
                 </div>
               </div>
             </div>
@@ -187,9 +265,23 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
-                Register Now
-              </button>
+              {isRegistered ? (
+                <button
+                  onClick={handleUnregister}
+                  disabled={registering}
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+                >
+                  {registering ? 'Processing...' : 'Cancel Registration'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleRegister}
+                  disabled={registering}
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                >
+                  {registering ? 'Processing...' : 'Register Now'}
+                </button>
+              )}
               <button className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                 <FiShare2 className="mr-2" /> Share Event
               </button>
