@@ -64,12 +64,21 @@ export async function POST(request: Request) {
     event.attendeeCount = (event.attendeeCount || 0) + 1;
     await event.save();
 
-    // Add event to user's saved events
+    // Add event to user's registered events
     if (!user.savedEvents) {
       user.savedEvents = [];
     }
     if (!user.savedEvents.includes(eventId)) {
       user.savedEvents.push(eventId);
+      await user.save();
+    }
+
+    // Also add to enrolledEvents for consistency with the profile page
+    if (!user.enrolledEvents) {
+      user.enrolledEvents = [];
+    }
+    if (!user.enrolledEvents.includes(eventId)) {
+      user.enrolledEvents.push(eventId);
       await user.save();
     }
 
@@ -133,6 +142,12 @@ export async function DELETE(request: Request) {
     // Remove event from user's saved events
     if (user.savedEvents) {
       user.savedEvents = user.savedEvents.filter(id => id !== eventId);
+      await user.save();
+    }
+
+    // Also remove from enrolledEvents for consistency with the profile page
+    if (user.enrolledEvents) {
+      user.enrolledEvents = user.enrolledEvents.filter(id => id !== eventId);
       await user.save();
     }
 

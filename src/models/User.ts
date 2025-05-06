@@ -12,6 +12,7 @@ export interface IUser extends Document {
   joinedDate: string;
   enrolledCourses?: number[];
   savedEvents?: number[];
+  enrolledEvents?: number[]; // For registered events
   joinedGroups?: number[];
   savedResources?: number[];
   password?: string; // Optional for authentication
@@ -32,6 +33,7 @@ const UserSchema: Schema = new Schema(
     joinedDate: { type: String, required: true },
     enrolledCourses: [{ type: Number }],
     savedEvents: [{ type: Number }],
+    enrolledEvents: [{ type: Number }], // For registered events
     joinedGroups: [{ type: Number }],
     savedResources: [{ type: Number }],
     password: { type: String }, // Optional for authentication

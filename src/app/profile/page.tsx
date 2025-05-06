@@ -7,13 +7,54 @@ import { useRouter } from 'next/navigation';
 import { FiUser, FiBook, FiUsers, FiCalendar, FiSettings, FiHeart, FiBookmark, FiClock, FiMapPin, FiMonitor, FiMail } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 
+// Define types for our data
+interface Course {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  level: string;
+  duration: string;
+  creatorId?: number;
+}
+
+interface Event {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  image: string;
+  isVirtual?: boolean;
+  attendees?: number[];
+  creatorId?: number;
+}
+
+interface Group {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  image: string;
+  memberCount: number;
+  creatorId?: number;
+}
+
+// Extend the User type to include enrolledEvents
+declare module '@/contexts/AuthContext' {
+  interface User {
+    enrolledEvents?: number[];
+  }
+}
+
 export default function ProfilePage() {
   const router = useRouter();
   const { user, loading: authLoading, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('courses');
-  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
-  const [registeredEvents, setRegisteredEvents] = useState<any[]>([]);
-  const [joinedGroups, setJoinedGroups] = useState<any[]>([]);
+  const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
+  const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
+  const [joinedGroups, setJoinedGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,20 +100,32 @@ export default function ProfilePage() {
 
         // Filter enrolled courses, saved events, and joined groups
         setEnrolledCourses(
-          coursesData.courses.filter(course =>
+          coursesData.courses.filter((course: Course) =>
             user.enrolledCourses && user.enrolledCourses.includes(course.id)
           )
         );
 
-        setRegisteredEvents(
-          eventsData.events.filter(event =>
-            // Check if the user is registered for this event (in attendees array)
-            event.attendees && event.attendees.includes(user.id)
-          )
+        // Get registered events - check both user.enrolledEvents and event.attendees
+        const registeredEventIds = (user as any).enrolledEvents || [];
+        const eventsFromAttendees = eventsData.events.filter((event: Event) =>
+          event.attendees && event.attendees.includes(user.id)
         );
 
+        // Combine both sources and remove duplicates
+        const allRegisteredEvents = [
+          ...eventsData.events.filter((event: Event) => registeredEventIds.includes(event.id)),
+          ...eventsFromAttendees
+        ];
+
+        // Remove duplicates by creating a Map with event id as key
+        const uniqueEvents = Array.from(
+          new Map(allRegisteredEvents.map(event => [event.id, event])).values()
+        ) as Event[];
+
+        setRegisteredEvents(uniqueEvents);
+
         setJoinedGroups(
-          groupsData.groups.filter(group =>
+          groupsData.groups.filter((group: Group) =>
             user.joinedGroups && user.joinedGroups.includes(group.id)
           )
         );
@@ -122,7 +175,7 @@ export default function ProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: user.id,
+          id: user?.id,
           ...formData
         }),
       });
@@ -674,12 +727,6 @@ export default function ProfilePage() {
                               </Link>
                             )}
                           </div>
-                          <Link
-                            href={`/events/${event.id}`}
-                            className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                          >
-                            View Details
-                          </Link>
                         </div>
                       </div>
                     </div>
